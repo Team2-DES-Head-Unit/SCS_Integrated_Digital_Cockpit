@@ -12,7 +12,7 @@
 ## Introduction
 
 Recent vehicles are making efforts to adopt Zonal Architecture rather than the conventional ECU placement that focused on functionalities. In this context, secure isolation between different system domains is essential for a single controller to meet diverse safety requirements of multiple systems. To achieve this, there have been continuous efforts to introduce hypervisor—commonly used in servers—into vehicles, aiming to accomplish safe data transfer between different domains while minimizing performance degradation.
-This project aims to integrate the Cluster Qt application and the PDC-System into a Mixed Criticality System (MCS). Both systems, developed in the previous projects, will be separated into different domains on a single RPi using a hypervisor, and will exchange data through inter-domain communication.
+This project aims to integrate the Cluster, Head Unit Qt application and the PDC-System into a Mixed Criticality System (MCS). Both systems, developed in the previous projects, will be separated into different domains on a single RPi using a hypervisor, and will exchange data through inter-domain communication.
 </br>
 
 
@@ -26,7 +26,7 @@ The [meta-virtualization](https://layers.openembedded.org/layerindex/branch/mast
 
 The goals and objectives of the project are as follows:
 
-1. Execute the Cluster application and the PDC-System in separate Linux virtual domains using a hypervisor.
+1. Execute the Cluster, Head Unit application and the PDC-System in separate Linux virtual domains using a hypervisor.
 2. Transfer ultrasonic sensor data and control results to the Cluster application using an inter-domain communication protocol.
 3. Optimize the system to minimize the overhead and performance degradation caused by hardware virtualization.
 </br>
