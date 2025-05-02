@@ -38,7 +38,7 @@ The architecture below is an example of a virtualized system architecture that u
 
 This architecture is provided as an example scenario, and participants are free to configure the system as they see fit.
 
-![System Architecture Example](https://github.com/user-attachments/assets/6b22a2e9-3525-4329-9509-c8af4f325ff3)
+![Example System Architecture](https://github.com/user-attachments/assets/e4c2e6f8-6e42-421b-924b-f8b5852ed007)
 </br>
 
 
