@@ -27,11 +27,6 @@ set(GAMEPAD_SRC
 	./Gamepad/ShanwanGamepad.cpp
 )
 
-add_executable(forward_backward_left_right
-	./examples/forward_backward_left_right.cpp
-	${PIRACER_SRC}
-)
-target_link_libraries(forward_backward_left_right ${pigpio_LIBRARY})
 
 add_executable(gamepad_control
 	./examples/gamepad_control.cpp
@@ -39,9 +34,3 @@ add_executable(gamepad_control
 	${GAMEPAD_SRC}
 )
 target_link_libraries(gamepad_control ${pigpio_LIBRARY})
-
-add_executable(read_battery
-	./examples/read_battery.cpp
-	${PIRACER_SRC}
-)
-target_link_libraries(read_battery ${pigpio_LIBRARY})
