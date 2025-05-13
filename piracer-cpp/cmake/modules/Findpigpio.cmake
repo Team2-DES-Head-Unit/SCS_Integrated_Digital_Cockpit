@@ -10,15 +10,15 @@ find_path(pigpio_INCLUDE_DIR
 	
 # Find the pigpio libraries.
 find_library(pigpio_LIBRARY 
-	NAMES libpigpio
+	NAMES pigpio
 	PATHS ${CMAKE_SYSROOT}/usr/lib
 )
 find_library(pigpiod_if_LIBRARY 
-	NAMES libpigpiod_if
+	NAMES pigpiod_if
 	PATHS ${CMAKE_SYSROOT}/usr/lib
 )
 find_library(pigpiod_if2_LIBRARY 
-	NAMES libpigpiod_if2
+	NAMES pigpiod_if2
 	PATHS ${CMAKE_SYSROOT}/usr/lib
 )
     
