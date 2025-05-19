@@ -33,4 +33,8 @@ add_executable(gamepad_control
 	${PIRACER_SRC}
 	${GAMEPAD_SRC}
 )
-target_link_libraries(gamepad_control ${pigpio_LIBRARY})
+target_link_libraries(gamepad_control
+    ${CMAKE_SYSROOT}/usr/lib/libpigpio.so.1
+    ${CMAKE_SYSROOT}/usr/lib/libpigpiod_if.so.1
+    ${CMAKE_SYSROOT}/usr/lib/libpigpiod_if2.so.1
+)
