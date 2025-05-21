@@ -3,6 +3,7 @@
 
 int main()
 {
+	gpioCfgMemAlloc(PI_MEM_ALLOC_PAGEMAP);
 	int rc = gpioInitialise();
 	if (rc < 0) printf("pigpio err = %d\n", rc);
 	// Ensure GPIO is initialized
