@@ -1,0 +1,23 @@
+# short-description: Create Raspberry Pi SD card image
+# long-description: Creates a partitioned SD card image for use with
+# Raspberry Pi. Boot files are located in the first vfat partition.
+
+#part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 20
+#part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root --align 4096
+
+
+# short-description: Create Raspberry Pi SD card image with A/B partitioning
+# long-description: Creates a partitioned SD card image for Raspberry Pi with
+# A/B rootfs slots for RAUC updates.
+
+# Boot partition (VFAT)
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 20
+
+# RootFS A partition (EXT4)
+part /rootfsA --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsA --align 4096
+
+# RootFS B partition (EXT4)
+part /rootfsB --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsB --align 4096
+
+# Bootloader configuration
+bootloader --ptable msdos

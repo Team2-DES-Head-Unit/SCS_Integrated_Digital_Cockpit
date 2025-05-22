@@ -1,0 +1,17 @@
+# Boot partition (VFAT)
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --align 4 --size 50
+
+# RootFS A (EXT4)
+part /rootfsA --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsA --align 4 --size 10240
+
+# RootFS B (EXT4)
+part /rootfsB --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsB --align 4 --size 10240
+
+# # Data Partition
+# part /data --ondisk mmcblk0 --fstype=ext4 --label data --align 4 --size 2048
+
+# # Home Partition
+# part /home --ondisk mmcblk0 --fstype=ext4 --label home --align 4 --size 2048
+
+# Bootloader (for RPi)
+bootloader --ptable msdos
