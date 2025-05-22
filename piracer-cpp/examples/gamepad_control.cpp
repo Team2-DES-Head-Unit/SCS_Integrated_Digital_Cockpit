@@ -5,7 +5,7 @@ int main()
 {
 	// ==== pigpio 사전 설정 ====
     gpioCfgMemAlloc(PI_MEM_ALLOC_MAILBOX); // PAGEMAP → MAILBOX
-    gpioCfgMlock(PI_OFF);                  // mlock 비활성(안전망)
+    gpioCfgClock(PI_OFF);                  // mlock 비활성(안전망)
 
     int rc = gpioInitialise();
     if (rc < 0) {
