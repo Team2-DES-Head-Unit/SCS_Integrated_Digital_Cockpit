@@ -3,16 +3,16 @@
 
 int main()
 {
-	gpioCfgMemAlloc(PI_MEM_ALLOC_PAGEMAP);
-	int rc = gpioInitialise();
-	if (rc < 0) printf("pigpio err = %d\n", rc);
-	// Ensure GPIO is initialized
-	// if (gpioInitialise() < 0)
-	// {
-	// 	std::cerr << "pigpio initialization failed" << std::endl;
-	// 	return 1;
-	// }
-	atexit(gpioTerminate);
+	// ==== pigpio 사전 설정 ====
+    gpioCfgMemAlloc(PI_MEM_ALLOC_MAILBOX); // PAGEMAP → MAILBOX
+    gpioCfgMlock(PI_OFF);                  // mlock 비활성(안전망)
+
+    int rc = gpioInitialise();
+    if (rc < 0) {
+        fprintf(stderr, "pigpio init failed (%d)\n", rc);
+        return 1;
+    }
+    atexit(gpioTerminate);
 
 	// Create instances
 	PiRacer racer;
