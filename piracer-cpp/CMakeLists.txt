@@ -5,7 +5,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_SKIP_RPATH TRUE)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--hash-style=gnu")
 
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--hash-style=gnu")
+set(PRJ_NAME gamepad_control)
 find_package(pigpio REQUIRED)
 
 include_directories(
@@ -28,13 +32,34 @@ set(GAMEPAD_SRC
 )
 
 
+add_executable(forward_backward_left_right
+        ./examples/forward_backward_left_right.cpp
+        ${PIRACER_SRC}
+)
+target_link_libraries(forward_backward_left_right ${pigpio_LIBRARY})
+
 add_executable(gamepad_control
 	./examples/gamepad_control.cpp
 	${PIRACER_SRC}
 	${GAMEPAD_SRC}
 )
+
+
 target_link_libraries(gamepad_control
-    ${CMAKE_SYSROOT}/usr/lib/libpigpio.so.1
+	${pigpio_LIBRARY}
+	${CMAKE_SYSROOT}/usr/lib/libpigpio.so.1
     ${CMAKE_SYSROOT}/usr/lib/libpigpiod_if.so.1
     ${CMAKE_SYSROOT}/usr/lib/libpigpiod_if2.so.1
 )
+
+
+add_executable(read_battery
+        ./examples/read_battery.cpp
+        ${PIRACER_SRC}
+)
+
+target_link_libraries(read_battery ${pigpio_LIBRARY})
+
+install(TARGETS forward_backward_left_right gamepad_control read_battery
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+		
