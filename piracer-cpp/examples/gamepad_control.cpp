@@ -3,16 +3,12 @@
 
 int main()
 {
-	gpioCfgMemAlloc(PI_MEM_ALLOC_PAGEMAP);
-	int rc = gpioInitialise();
-	if (rc < 0) printf("pigpio err = %d\n", rc);
-	// Ensure GPIO is initialized
-	// if (gpioInitialise() < 0)
-	// {
-	// 	std::cerr << "pigpio initialization failed" << std::endl;
-	// 	return 1;
-	// }
-	atexit(gpioTerminate);
+    int rc = gpioInitialise();
+    if (rc < 0) {
+        fprintf(stderr, "pigpio init failed (%d)\n", rc);
+        return 1;
+    }
+    atexit(gpioTerminate);
 
 	// Create instances
 	PiRacer racer;
