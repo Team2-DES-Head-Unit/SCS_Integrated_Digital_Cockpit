@@ -1,4 +1,12 @@
 #include <iostream>
+#include <iomanip>
+#include <thread>
+#include <condition_variable>
+#include <chrono>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
 #include <cstring>
 
 extern "C" {
