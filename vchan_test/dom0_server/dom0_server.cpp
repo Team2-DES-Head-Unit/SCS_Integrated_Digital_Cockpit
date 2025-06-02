@@ -122,7 +122,9 @@ void vchan_server(uint32_t domid){
         // vchan structure, data, size
         if (send_byte <= 0){
             std::cerr << "Failed to write : " << domid << std::endl;
-            break;
+            // break;
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            continue;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(100)); // send every 100ms
     }
@@ -134,13 +136,17 @@ int main() {
     std::thread receiver(receive_gear_state);
 
     std::thread domu1_server(vchan_server, DOMU1_ID);
-    // std::thread domu2_server(vchan_server, DOMU2_ID);
+    std::thread domu2_server(vchan_server, DOMU2_ID);
 
     receiver.join();
     domu1_server.join();
-    // domu2_server.join();
+    domu2_server.join();
 
     return 0;
 }
 
 // check dom channel : xenstore-ls -f
+
+// xenstore route
+// /local/domain/0/data/vchan/control/
+// /local/domain/2/data/vchan/control/
