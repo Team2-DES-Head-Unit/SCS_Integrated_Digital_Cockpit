@@ -30,7 +30,9 @@ int main(){
     struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "control");
     if (!client){
         std::cerr << "Failed to create vchan client" << std::endl;
-        return 1;
+        // return 1;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        continue;
     }
 
     std::cout << "Connected to dom0" << std::endl;
