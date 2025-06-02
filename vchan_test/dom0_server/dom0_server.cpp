@@ -9,7 +9,9 @@
 #include <unistd.h>
 #include <cstring>
 
-#include <libxenvchan.h>
+extern "C" {
+    #include <libxenvchan.h>
+}
 
 // Need to set according to xl list
 #define DOMU1_ID 1

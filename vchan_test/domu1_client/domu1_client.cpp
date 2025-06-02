@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstring>
 
-#include <libxenvchan.h>
+extern "C" {
+    #include <libxenvchan.h>
+}
 
 struct ControlData {
     float throttle;
