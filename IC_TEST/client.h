@@ -3,11 +3,11 @@
 
 #include <QThread>
 #include <QObject>
-#include <libxenvchan.h>
+// #include <libxenvchan.h>
 
-//extern "C"{
-//#include <libxenvchan.h>
-//}
+extern "C"{
+    #include <libxenvchan.h>
+}
 
 struct ControlData {
     float throttle;

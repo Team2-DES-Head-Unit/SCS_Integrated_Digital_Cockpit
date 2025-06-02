@@ -9,7 +9,10 @@
 #include <QObject>
 #include <QDebug>
 #include <QThread>
-#include <libxenvchan.h>
+// #include <libxenvchan.h>
+extern "C"{
+    #include <libxenvchan.h>
+}
 
 struct ControlData {
     float throttle;
