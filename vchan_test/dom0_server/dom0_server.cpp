@@ -120,6 +120,16 @@ void vchan_server(uint32_t domid){
             std::lock_guard<std::mutex> lock(mutex);
             C_data = control_data; // safely copy control data
         }
+
+        std::cout << "[Copied ControlData] "
+              << "Gear: " << (C_data.gear_P ? "P" :
+                            (C_data.gear_D ? "D" :
+                            (C_data.gear_R ? "R" :
+                            (C_data.gear_N ? "N" : "Unknown"))))
+              << " | Speed: " << C_data.speed
+              << " | Distance: " << C_data.distance
+              << std::endl;
+
         int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
         std::cerr << "send byte size : " << send_byte << std::endl;
         // vchan structure, data, size
@@ -143,7 +153,7 @@ int main() {
 
     receiver.join();
     domu1_server.join();
-    domu2_server.join();
+    // domu2_server.join();
 
     return 0;
 }
