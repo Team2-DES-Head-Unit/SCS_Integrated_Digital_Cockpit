@@ -112,12 +112,16 @@ int get_domid(const std::string& name){
     std::array<char, 128> buffer;
     std::string result;
 
+    std::cerr << "Running command: " << cmd << std::endl;
+
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe) throw std::runtime_error("Failed to run xl domid");
 
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
         result += buffer.data();
     }
+
+    std::cerr << "Find Dom ID result : " << result << std::endl;
 
     return std::stoi(result);
 }
