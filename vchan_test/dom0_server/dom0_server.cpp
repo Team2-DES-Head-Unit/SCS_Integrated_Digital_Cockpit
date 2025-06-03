@@ -14,7 +14,7 @@ extern "C" {
 }
 
 // Need to set according to xl list
-#define DOMU1_ID 1
+#define DOMU1_ID 4
 // #define DOMU2_ID 2
 
 std::mutex mutex;
