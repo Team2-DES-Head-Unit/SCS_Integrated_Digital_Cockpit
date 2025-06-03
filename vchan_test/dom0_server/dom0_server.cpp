@@ -14,7 +14,7 @@ extern "C" {
 }
 
 // Need to set according to xl list
-#define DOMU1_ID 2
+#define DOMU1_ID 1
 // #define DOMU2_ID 2
 
 std::mutex mutex;
@@ -143,7 +143,7 @@ int main() {
 
     receiver.join();
     domu1_server.join();
-    // domu2_server.join();
+    domu2_server.join();
 
     return 0;
 }
