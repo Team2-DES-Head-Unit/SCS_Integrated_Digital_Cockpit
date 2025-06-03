@@ -27,7 +27,7 @@ struct ControlData {
 };
 
 int main(){
-    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "control");
+    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "piracer");
     if (!client){
         std::cerr << "Failed to create vchan client" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

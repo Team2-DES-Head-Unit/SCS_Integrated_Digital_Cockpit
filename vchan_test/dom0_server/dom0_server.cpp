@@ -105,7 +105,7 @@ void receive_gear_state() {
 }
 
 void vchan_server(uint32_t domid){
-    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "control", 0, 4096);
+    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer", 0, 4096);
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
     if (!server){
         std::cerr << "Failed to create vchan server : " << domid << std::endl;
@@ -120,6 +120,14 @@ void vchan_server(uint32_t domid){
             std::lock_guard<std::mutex> lock(mutex);
             C_data = control_data; // safely copy control data
         }
+
+        if (!libxenvchan_is_open(server)){
+            std::cerr << "Client not connected\n";
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            continue;
+        }
+        int space = libxenvchan_buffer_space(server);
+        std::cerr << "available buffer space : " << space << std::endl;
 
         std::cout << "[Copied ControlData] "
               << "Gear: " << (C_data.gear_P ? "P" :
