@@ -14,8 +14,8 @@ extern "C" {
 }
 
 // Need to set according to xl list
-#define DOMU1_ID 1
-#define DOMU2_ID 2
+#define DOMU1_ID 2
+// #define DOMU2_ID 2
 
 std::mutex mutex;
 std::condition_variable condition;
@@ -139,11 +139,11 @@ int main() {
     std::thread receiver(receive_gear_state);
 
     std::thread domu1_server(vchan_server, DOMU1_ID);
-    std::thread domu2_server(vchan_server, DOMU2_ID);
+    // std::thread domu2_server(vchan_server, DOMU2_ID);
 
     receiver.join();
     domu1_server.join();
-    domu2_server.join();
+    // domu2_server.join();
 
     return 0;
 }
