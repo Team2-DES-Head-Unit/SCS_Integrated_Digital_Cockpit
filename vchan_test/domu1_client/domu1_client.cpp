@@ -26,8 +26,18 @@ struct ControlData {
     uint8_t indicator_r;
 };
 
+#define XENSTORE_PATH "/local/domain/0/piracer/"
+
 int main(){
-    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "piracer");
+    // struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "piracer");
+    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, XENSTORE_PATH);
+
+    if (libxenvchan_is_open(client)) {
+        std::cout << "Channel is open." << std::endl;
+    } else {
+        std::cout << "Channel is not open." << std::endl;
+    }
+
     if (!client){
         std::cerr << "Failed to create vchan client" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
