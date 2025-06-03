@@ -121,6 +121,7 @@ void vchan_server(uint32_t domid){
             C_data = control_data; // safely copy control data
         }
         int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
+        std::cerr << "send byte size : " << send_byte << std::endl;
         // vchan structure, data, size
         if (send_byte <= 0){
             std::cerr << "Failed to write : " << domid << std::endl;
