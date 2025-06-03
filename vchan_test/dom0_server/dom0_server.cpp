@@ -8,6 +8,9 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <cstring>
+#include <cstdlib>
+#include <memory>
+#include <stdexcept>
 
 extern "C" {
     #include <libxenvchan.h>
@@ -104,6 +107,21 @@ void receive_gear_state() {
     close(server_fd);
 }
 
+int get_domid(const std::string& name){
+    std::string cmd = "xl domid " + name;
+    std::array<char, 128> buffer;
+    std::string result;
+
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) throw std::runtime_error("Failed to run xl domid");
+
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+
+    return std::stoi(result);
+}
+
 void vchan_server(uint32_t domid){
     struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer", 0, 4096);
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
@@ -156,7 +174,9 @@ int main() {
     // 기어 상태를 받는 쓰레드 시작
     std::thread receiver(receive_gear_state);
 
-    std::thread domu1_server(vchan_server, DOMU1_ID);
+    int domu1_id = get_domid("hu");
+    std::thread domu1_server(vchan_server, domu1_id);
+    // std::thread domu1_server(vchan_server, DOMU1_ID);
     // std::thread domu2_server(vchan_server, DOMU2_ID);
 
     receiver.join();
