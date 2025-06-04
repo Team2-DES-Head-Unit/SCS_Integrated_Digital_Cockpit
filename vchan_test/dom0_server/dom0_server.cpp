@@ -127,7 +127,8 @@ int get_domid(const std::string& name){
 }
 
 void vchan_server(uint32_t domid){
-    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", 0, 0);
+    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", 0, 4096);
+    // struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", sizeof(ControlData), sizeof(ControlData));
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
     if (!server){
         std::cerr << "Failed to create vchan server : " << domid << std::endl;
@@ -143,14 +144,6 @@ void vchan_server(uint32_t domid){
             C_data = control_data; // safely copy control data
         }
 
-        if (!libxenvchan_is_open(server)){
-            std::cerr << "Client not connected\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            continue;
-        }
-        int space = libxenvchan_buffer_space(server);
-        std::cerr << "available buffer space : " << space << std::endl;
-
         std::cout << "[Copied ControlData] "
               << "Gear: " << (C_data.gear_P ? "P" :
                             (C_data.gear_D ? "D" :
@@ -160,18 +153,36 @@ void vchan_server(uint32_t domid){
               << " | Distance: " << C_data.distance
               << std::endl;
 
+        // if (!libxenvchan_is_open(server)){
+        //     std::cerr << "Client not connected\n";
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        //     continue;
+        // }
+        if (libxenvchan_is_open(server)){
+            int space = libxenvchan_buffer_space(server);
+            std::cerr << "available buffer space : " << space << std::endl;
+            
+            if (space >= sizeof(ControlData)){
+                int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
+                if (send_byte <= 0){
+                    std::cerr << "write failed, client not reading" << std::endl;
+                } 
+            } else{
+                std::cerr << "buffer full, skip write" << std::endl;
+            }
+        } else{
+            std::cerr << "Client not connected\n";
+        }
+
         // int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
-        if (space >= sizeof(ControlData)){
-            libxenvchan_write(server, &C_data, sizeof(C_data));
-        }
-        std::cerr << "send byte size : " << send_byte << std::endl;
-        // vchan structure, data, size
-        if (send_byte <= 0){
-            std::cerr << "Failed to write : " << domid << std::endl;
-            // break;
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            continue;
-        }
+        // std::cerr << "send byte size : " << send_byte << std::endl;
+        // // vchan structure, data, size
+        // if (send_byte <= 0){
+        //     std::cerr << "Failed to write : " << domid << std::endl;
+        //     // break;
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        //     continue;
+        // }
         std::this_thread::sleep_for(std::chrono::milliseconds(100)); // send every 100ms
     }
     libxenvchan_close(server);
