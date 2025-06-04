@@ -127,7 +127,7 @@ int get_domid(const std::string& name){
 }
 
 void vchan_server(uint32_t domid){
-    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", 0, 4096);
+    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", 0, 0);
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
     if (!server){
         std::cerr << "Failed to create vchan server : " << domid << std::endl;
@@ -160,7 +160,10 @@ void vchan_server(uint32_t domid){
               << " | Distance: " << C_data.distance
               << std::endl;
 
-        int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
+        // int send_byte = libxenvchan_write(server, &C_data, sizeof(C_data));
+        if (space >= sizeof(ControlData)){
+            libxenvchan_write(server, &C_data, sizeof(C_data));
+        }
         std::cerr << "send byte size : " << send_byte << std::endl;
         // vchan structure, data, size
         if (send_byte <= 0){
