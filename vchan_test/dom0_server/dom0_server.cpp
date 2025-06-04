@@ -127,7 +127,7 @@ int get_domid(const std::string& name){
 }
 
 void vchan_server(uint32_t domid){
-    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer", 0, 4096);
+    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", 0, 4096);
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
     if (!server){
         std::cerr << "Failed to create vchan server : " << domid << std::endl;
@@ -178,8 +178,9 @@ int main() {
     // 기어 상태를 받는 쓰레드 시작
     std::thread receiver(receive_gear_state);
 
-    int domu1_id = get_domid("hu");
-    std::thread domu1_server(vchan_server, domu1_id);
+    // int dom_id = get_domid("hu");
+    int dom_id = 0
+    std::thread domu1_server(vchan_server, dom_id);
     // std::thread domu1_server(vchan_server, DOMU1_ID);
     // std::thread domu2_server(vchan_server, DOMU2_ID);
 

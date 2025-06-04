@@ -26,11 +26,12 @@ struct ControlData {
     uint8_t indicator_r;
 };
 
-#define XENSTORE_PATH "/local/domain/0/piracer/"
+// #define XENSTORE_PATH "/local/domain/0/piracer/"
 
 int main(){
-    // struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "piracer");
-    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, XENSTORE_PATH);
+    struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, "piracer/hu");
+    // struct libxenvchan *client = libxenvchan_client_init(nullptr, 1, "piracer");
+    // struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, XENSTORE_PATH);
 
     if (libxenvchan_is_open(client)) {
         std::cout << "Channel is open." << std::endl;
