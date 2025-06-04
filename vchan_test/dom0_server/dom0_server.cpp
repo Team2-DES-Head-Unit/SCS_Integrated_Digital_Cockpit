@@ -17,7 +17,7 @@ extern "C" {
 }
 
 // Need to set according to xl list
-#define DOMU1_ID 6
+#define DOMU1_ID 1
 // #define DOMU2_ID 2
 
 std::mutex mutex;
@@ -179,9 +179,10 @@ int main() {
     std::thread receiver(receive_gear_state);
 
     // int dom_id = get_domid("hu");
-    int dom_id = 0;
-    std::thread domu1_server(vchan_server, dom_id);
-    // std::thread domu1_server(vchan_server, DOMU1_ID);
+    // int dom_id = 0;
+
+    // std::thread domu1_server(vchan_server, dom_id);
+    std::thread domu1_server(vchan_server, DOMU1_ID);
     // std::thread domu2_server(vchan_server, DOMU2_ID);
 
     receiver.join();

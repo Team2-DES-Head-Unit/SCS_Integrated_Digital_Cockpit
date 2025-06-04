@@ -33,17 +33,17 @@ int main(){
     // struct libxenvchan *client = libxenvchan_client_init(nullptr, 1, "piracer");
     // struct libxenvchan *client = libxenvchan_client_init(nullptr, 0, XENSTORE_PATH);
 
-    if (libxenvchan_is_open(client)) {
-        std::cout << "Channel is open." << std::endl;
-    } else {
-        std::cout << "Channel is not open." << std::endl;
-    }
-
     if (!client){
         std::cerr << "Failed to create vchan client" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         return 1;
     }
+
+    // if (libxenvchan_is_open(client)) {
+    //     std::cout << "Channel is open." << std::endl;
+    // } else {
+    //     std::cout << "Channel is not open." << std::endl;
+    // }
 
     std::cout << "Connected to dom0" << std::endl;
 
