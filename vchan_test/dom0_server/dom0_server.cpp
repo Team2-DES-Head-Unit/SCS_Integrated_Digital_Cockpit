@@ -179,7 +179,7 @@ int main() {
     std::thread receiver(receive_gear_state);
 
     // int dom_id = get_domid("hu");
-    int dom_id = 0
+    int dom_id = 0;
     std::thread domu1_server(vchan_server, dom_id);
     // std::thread domu1_server(vchan_server, DOMU1_ID);
     // std::thread domu2_server(vchan_server, DOMU2_ID);
