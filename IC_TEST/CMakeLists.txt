@@ -25,7 +25,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_library(XENVCHAN NAMES xenvchan libxenvchan.so REQUIRED) #주석 해제
+# find_library(XENVCHAN NAMES xenvchan libxenvchan.so REQUIRED) #주석 해제
+
+find_library(XENVCHAN NAMES xenvchan libxenvchan.so
+  PATHS
+    /usr/lib
+    /usr/include/xen
+    ${CMAKE_SYSROOT}/usr/lib
+    ${CMAKE_SYSROOT}/usr/lib64
+    ${CMAKE_SYSROOT}/lib
+    ${CMAKE_SYSROOT}/lib64
+  NO_DEFAULT_PATH
+  REQUIRED
+)
+
 find_package(Threads REQUIRED)
 find_package(Qt5 COMPONENTS Core Quick REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui OpenGL REQUIRED)
@@ -65,7 +78,7 @@ target_compile_definitions(IC_TEST
 #target_link_libraries(IC_TEST
 #  PRIVATE Qt5::Core Qt5::Quick vsomeip3 pthread)
 
-include_directories(/usr/include/xen)  # 필요시 주석 해제
+# include_directories(/usr/include/xen)  # 필요시 주석 해제
 target_link_libraries(IC_TEST PRIVATE
   Qt5::Core
   Qt5::Quick

@@ -25,7 +25,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_library(XENVCHAN NAMES xenvchan libxenvchan.so REQUIRED) #주석 해제
+# find_library(XENVCHAN NAMES xenvchan libxenvchan.so REQUIRED) #주석 해제
+
+find_library(XENVCHAN NAMES xenvchan libxenvchan.so
+  PATHS
+    /usr/lib
+    /usr/include/xen
+    ${CMAKE_SYSROOT}/usr/lib
+    ${CMAKE_SYSROOT}/usr/lib64
+    ${CMAKE_SYSROOT}/lib
+    ${CMAKE_SYSROOT}/lib64
+  NO_DEFAULT_PATH
+  REQUIRED
+)
+
 find_package(Qt5 COMPONENTS Core Quick Multimedia Bluetooth REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui REQUIRED)
 
@@ -79,8 +92,8 @@ endif()
 
 target_compile_definitions(HeadUnit
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-  
-include_directories(/usr/include/xen)  # 필요시 주석 해제
+
+# include_directories(/usr/include/xen)  # 필요시 주석 해제
 target_link_libraries(HeadUnit PRIVATE
   Qt5::Core
   Qt5::Quick
