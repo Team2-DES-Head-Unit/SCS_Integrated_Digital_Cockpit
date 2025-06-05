@@ -5,9 +5,11 @@
 #include <chrono>
 
 Client::Client(QObject *parent): QThread(parent){
-    vchanClient = libxenvchan_client_init(nullptr, 0, "control");
+    const char *xs_path = "/local/domain/0/data/piracer/hu";
+    vchanClient = libxenvchan_client_init(nullptr, 0, xs_path);
     if (!vchanClient){
         qDebug() << "Failed to create vchan client\n";
+        perror("libxenvchan_client_init");
         return;
     } else{
         qDebug() << "Vchan client initialized success\n";

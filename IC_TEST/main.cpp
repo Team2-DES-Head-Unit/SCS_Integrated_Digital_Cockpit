@@ -9,6 +9,7 @@
 #include <deque>
 #include <QWindow>
 #include <QScreen>
+#include <QRandomGenerator>
 
 #include <DateClock.h>
 //#include <receiver.h>
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
 //    std::thread server_thread(start_server);
 //    server_thread.detach();
 
+    // 다중 화면 처리
     QList<QScreen*> screens = QGuiApplication::screens();
     if (screens.size() > 1) {
         qDebug() << "Second screen detected: " << screens.at(1)->name();
