@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     MirrorProvider mirrorProvider;
     ClickNotifier clickNotifier;
 //    Receiver receiver;
-    extern Client client;
+    Client client;
 
 //    QCommandLineParser parser;
 //    parser.setApplicationDescription("Qt Wayland Application");
