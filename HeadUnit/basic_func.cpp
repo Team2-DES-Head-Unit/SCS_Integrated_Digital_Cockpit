@@ -1,7 +1,7 @@
 #include "basic_func.h"
 
 #include <QTimerEvent>
-#include <QRandomGenerator>
+// #include <QRandomGenerator>
 
 TimeProvider::TimeProvider(QObject *parent) : QObject(parent){
     startTimer(1000);
@@ -44,8 +44,8 @@ void SpeedProvider::setCurrentSpeed(const int &speed){
 }
 
 void SpeedProvider::timerEvent(QTimerEvent *){ // test value
-    // int randomSpeed = qrand() % 150;
-    int randomSpeed = QRandomGenerator::global()->bounded(150);
+    int randomSpeed = qrand() % 150;
+    // int randomSpeed = QRandomGenerator::global()->bounded(150);
 //    setCurrentSpeed(QString::number(randomSpeed));
     setCurrentSpeed(randomSpeed);
 }
