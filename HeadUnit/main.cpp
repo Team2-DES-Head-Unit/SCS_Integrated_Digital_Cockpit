@@ -96,8 +96,8 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    std::thread client_thread(start_client);
-    client_thread.detach();
+    // std::thread client_thread(start_client);
+    // client_thread.detach();
 
     return app.exec();
 }
