@@ -65,7 +65,7 @@ target_compile_definitions(IC_TEST
 #target_link_libraries(IC_TEST
 #  PRIVATE Qt5::Core Qt5::Quick vsomeip3 pthread)
 
-# include_directories(/usr/include/xen)  # 필요시 주석 해제
+include_directories(/usr/include/xen)  # 필요시 주석 해제
 target_link_libraries(IC_TEST PRIVATE
   Qt5::Core
   Qt5::Quick

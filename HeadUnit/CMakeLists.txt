@@ -79,7 +79,8 @@ endif()
 
 target_compile_definitions(HeadUnit
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-# include_directories(/usr/include/xen)  # 필요시 주석 해제
+  
+include_directories(/usr/include/xen)  # 필요시 주석 해제
 target_link_libraries(HeadUnit PRIVATE
   Qt5::Core
   Qt5::Quick
