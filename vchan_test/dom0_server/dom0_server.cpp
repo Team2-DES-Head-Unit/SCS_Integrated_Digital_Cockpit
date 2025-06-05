@@ -185,7 +185,7 @@ void vchan_server(uint32_t domid){
         //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
         //     continue;
         // }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // send every 100ms
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // send every 100ms
     }
     libxenvchan_close(server);
 }

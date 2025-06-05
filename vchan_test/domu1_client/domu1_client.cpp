@@ -61,7 +61,7 @@ int main(){
         } else {
             std::cerr << "Failed to read data or unexpected data size" << std::endl;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // wait before next read
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // wait before next read
     }
     libxenvchan_close(client);
     return 0;
