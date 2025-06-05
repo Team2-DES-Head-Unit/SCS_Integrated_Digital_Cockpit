@@ -11,13 +11,11 @@
 #include <QScreen>
 #include <QRandomGenerator>
 
-#include <DateClock.h>
-//#include <receiver.h>
-#include <Weather.h>
 //#include <Gauge.h>
 //#include <get_battery.h>
+#include <DateClock.h>
+#include <Weather.h>
 #include <DataProvider.h>
-//#include <server.h>
 #include <client.h>
 
 //int i2c_fd;
@@ -27,9 +25,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
-//    qmlRegisterType<SpeedGauge>("com.myapp.gauge", 1, 0, "SpeedGauge");
-//    qmlRegisterType<RpmGauge>("com.myapp.gauge", 1, 0, "RpmGauge");
 
     QQmlApplicationEngine engine;
 
@@ -45,20 +40,13 @@ int main(int argc, char *argv[])
     DateClock clock;
     DateClock date;
     Client client;
-//    Receiver receiver;
     Weather weather;
-//    extern Server server;
-
-//    receiver.initialize();
-//    receiver.start();
 
     client.start();
 
     engine.rootContext()->setContextProperty("Clock", &clock);
     engine.rootContext()->setContextProperty("Date", &date);
-//    engine.rootContext()->setContextProperty("Receiver", &receiver);
     engine.rootContext()->setContextProperty("Client", &client);
-//    engine.rootContext()->setContextProperty("Server", &server);
     engine.rootContext()->setContextProperty("Weather", &weather);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -75,10 +63,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-//    std::thread server_thread(start_server);
-//    server_thread.detach();
-
-    // 다중 화면 처리
     QList<QScreen*> screens = QGuiApplication::screens();
     if (screens.size() > 1) {
         qDebug() << "Second screen detected: " << screens.at(1)->name();

@@ -11,7 +11,7 @@ ApplicationWindow {
 //    visibility: Window.FullScreen
     height:400
 //    color: "#28282c"
-    color: Server.mode === 1 ? "#fcfcfc" : "#28282c"
+    color: Client.mode === 1 ? "#fcfcfc" : "#28282c"
     title: qsTr("Instrument Cluster")
 //    flags: Qt.FramelessWindowHint
 
@@ -29,7 +29,7 @@ ApplicationWindow {
         anchors.verticalCenter: parent.verticalCenter
         anchors.topMargin: 30
 //        source: "/IC Assets/background_car.png"
-        source: Server.mode === 1 ? "IC Assets/light/background_car_l.png" : "/IC Assets/background_car.png"
+        source: Client.mode === 1 ? "IC Assets/light/background_car_l.png" : "/IC Assets/background_car.png"
         fillMode: Image.PreserveAspectFit
     }
     Rectangle {
@@ -46,7 +46,7 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 //            source: "/IC Assets/speedometer.png"
-            source: Server.mode === 1 ? "/IC Assets/light/speedometer_l.png" : "/IC Assets/speedometer.png"
+            source: Client.mode === 1 ? "/IC Assets/light/speedometer_l.png" : "/IC Assets/speedometer.png"
             fillMode: Image.PreserveAspectFit
         }
 //        SpeedGauge {
@@ -72,7 +72,7 @@ ApplicationWindow {
             width: 400
             height: 400
 
-            property color gaugeColor: (Server.mode === 1) ? "#7788f2" : "#87f1d0"
+            property color gaugeColor: (Client.mode === 1) ? "#7788f2" : "#87f1d0"
 
             onPaint: {
                 var ctx = getContext("2d");
@@ -81,26 +81,26 @@ ApplicationWindow {
                 var centerX = width / 2;
                 var centerY = height / 2;
                 var startAngle = (116 * Math.PI) / 180;
-                var endAngle = ((116 + (Receiver.speedKmh * 1.711)) * Math.PI) / 180;  // 끝 각도 (바늘 각도에 따라 변함)
+                var endAngle = ((116 + (Client.speedKmh * 1.711)) * Math.PI) / 180;  // 끝 각도 (바늘 각도에 따라 변함)
 
                 // 게이지 호 그리기
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, 113, startAngle, endAngle, false);  // 원호 그리기
                 ctx.lineWidth = 38;
 //                ctx.strokeStyle = "#87F1D0";  // 게이지 색상
-//                ctx.strokeStyle = Server.mode === 1 ? "#7788F2" : "#87F1D0"
+//                ctx.strokeStyle = Client.mode === 1 ? "#7788F2" : "#87F1D0"
                 ctx.strokeStyle = speed_canvas.gaugeColor;
                 ctx.stroke();
             }
             Connections{
-                target: Server
+                target: Client
                 onModeChanged:{
-                    speed_canvas.gaugeColor = (Server.mode === 1) ? "#7788f2" : "#87f1d0"
+                    speed_canvas.gaugeColor = (Client.mode === 1) ? "#7788f2" : "#87f1d0"
                     speed_canvas.update();
                 }
             }
             Connections{
-                target: Receiver
+                target: Client
                 onSpeedChanged:{
                     speed_canvas.update();
                 }
@@ -112,11 +112,11 @@ ApplicationWindow {
             anchors.right: speed_dial.horizontalCenter
             anchors.bottom: speed_dial.verticalCenter
 //            source: "/IC Assets/needle.png"
-            source: Server.mode === 1 ? "/IC Assets/light/needle_l.png" : "/IC Assets/needle.png"
+            source: Client.mode === 1 ? "/IC Assets/light/needle_l.png" : "/IC Assets/needle.png"
             fillMode: Image.PreserveAspectFit
             transformOrigin: Item.BottomRight
-//            rotation: randomValue * 3.06 - 108 //(Receiver.speedKmh * 2.5 + 210)
-            rotation: (Receiver.speedKmh * 1.7 - 108)
+//            rotation: randomValue * 3.06 - 108 //(Client.speedKmh * 2.5 + 210)
+            rotation: (Client.speedKmh * 1.7 - 108)
 
             Behavior on rotation{
                 NumberAnimation{
@@ -125,27 +125,27 @@ ApplicationWindow {
                 }
             }
              Connections{
-                 target: Receiver
-                 onSpeedChanged: speed_needle.angle = (Receiver.speedKmh * 1.7 - 108)
+                 target: Client
+                 onSpeedChanged: speed_needle.angle = (Client.speedKmh * 1.7 - 108)
              }
         }
         Image{
             id: speed_inner
             anchors.centerIn: speed_dial
             source: "/IC Assets/inner_circle.png"
-//            source: Server.mode === 1 ? "/IC Assets/light/inner_circle_l.png" : "/IC Assets/inner_circle.png"
+//            source: Client.mode === 1 ? "/IC Assets/light/inner_circle_l.png" : "/IC Assets/inner_circle.png"
             fillMode: Image.PreserveAspectFit
         }
         Text {
             id: speed_text
-//            text: randomValue //Receiver.speedKmh.toFixed(0)
-            text: Receiver.speedKmh.toFixed(0)
+//            text: randomValue //Client.speedKmh.toFixed(0)
+            text: Client.speedKmh.toFixed(0)
             anchors.centerIn: speed_dial
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 30
             font.pixelSize: 30
 //            color: "white"
-//            color: Server.mode === 1 ? "#414141" : "#ffffff"
+//            color: Client.mode === 1 ? "#414141" : "#ffffff"
             color: "#ffffff"
             font.bold: true
 
@@ -159,9 +159,9 @@ ApplicationWindow {
              }
         }
          Connections{
-                target: Receiver
+                target: Client
                 onSpeedChanged: {
-                    speed_text.targetSpeed = Receiver.speedKmh.toFixed(0)
+                    speed_text.targetSpeed = Client.speedKmh.toFixed(0)
                     speedAnimation.start()
                 }
          }
@@ -182,7 +182,7 @@ ApplicationWindow {
 //             anchors.bottomMargin: 50
 //             font.pixelSize: 25
 ////             color: "#87F1D0"
-//             color: Server.mode === 1 ? "#7788F2" : "#87F1D0"
+//             color: Client.mode === 1 ? "#7788F2" : "#87F1D0"
 //         }
     }
 
@@ -200,7 +200,7 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
 //            source: "/IC Assets/speedometer.png"
-            source: Server.mode === 1 ? "/IC Assets/light/speedometer_l.png" : "/IC Assets/speedometer.png"
+            source: Client.mode === 1 ? "/IC Assets/light/speedometer_l.png" : "/IC Assets/speedometer.png"
             fillMode: Image.PreserveAspectFit
         }
 //        RpmGauge {
@@ -227,7 +227,7 @@ ApplicationWindow {
             width: 400
             height: 400
 
-            property color gaugeColor: (Server.mode === 1) ? "#7788f2" : "#87f1d0"
+            property color gaugeColor: (Client.mode === 1) ? "#7788f2" : "#87f1d0"
 
             onPaint: {
                 var ctx = getContext("2d");
@@ -236,26 +236,26 @@ ApplicationWindow {
                 var centerX = width / 2;
                 var centerY = height / 2;
                 var startAngle = (116 * Math.PI) / 180;
-                var endAngle = ((116 + ((Receiver.speedKmh * 2.895) * 0.514)) * Math.PI) / 180;  // 끝 각도 (바늘 각도에 따라 변함)
+                var endAngle = ((116 + ((Client.speedKmh * 2.895) * 0.514)) * Math.PI) / 180;  // 끝 각도 (바늘 각도에 따라 변함)
 
                 // 게이지 호 그리기
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, 113, startAngle, endAngle, false);  // 원호 그리기
                 ctx.lineWidth = 38;
 //                ctx.strokeStyle = "#87F1D0";  // 게이지 색상
-//                ctx.strokeStyle = Server.mode === 1 ? "#7788F2" : "#87F1D0";
+//                ctx.strokeStyle = Client.mode === 1 ? "#7788F2" : "#87F1D0";
                 ctx.strokeStyle = rpm_canvas.gaugeColor;
                 ctx.stroke();
             }
             Connections{
-                target: Server
+                target: Client
                 onModeChanged:{
-                    rpm_canvas.gaugeColor = (Server.mode === 1) ? "#7788f2" : "#87f1d0"
+                    rpm_canvas.gaugeColor = (Client.mode === 1) ? "#7788f2" : "#87f1d0"
                     rpm_canvas.update();
                 }
             }
             Connections{
-                target: Receiver
+                target: Client
                 onSpeedChanged:{
                     rpm_canvas.update();
                 }
@@ -267,11 +267,11 @@ ApplicationWindow {
             anchors.right: rpm_dial.horizontalCenter
             anchors.bottom: rpm_dial.verticalCenter
 //            source: "/IC Assets/needle.png"
-            source: Server.mode === 1 ? "/IC Assets/light/needle_l.png" : "/IC Assets/needle.png"
+            source: Client.mode === 1 ? "/IC Assets/light/needle_l.png" : "/IC Assets/needle.png"
             fillMode: Image.PreserveAspectFit
             transformOrigin: Item.BottomRight
-//            rotation: randomValue * 3.06 - 108 //(((Receiver.speedKmh) / (2 * 3.14 * 3.3)) * 60)
-            rotation: ((((Receiver.speedKmh) *2.895) * 0.51) - 108)
+//            rotation: randomValue * 3.06 - 108 //(((Client.speedKmh) / (2 * 3.14 * 3.3)) * 60)
+            rotation: ((((Client.speedKmh) *2.895) * 0.51) - 108)
             Behavior on rotation{
                 NumberAnimation{
                     duration: 50
@@ -279,28 +279,28 @@ ApplicationWindow {
                 }
             }
              Connections{
-                 target: Receiver
-                 onSpeedChanged: rpm_needle.angle = ((((Receiver.speedKmh) * 2.895) * 0.51) - 108)
+                 target: Client
+                 onSpeedChanged: rpm_needle.angle = ((((Client.speedKmh) * 2.895) * 0.51) - 108)
              }
         }
         Image{
             id: rpm_inner
             anchors.centerIn: rpm_dial
             source: "/IC Assets/inner_circle.png"
-//            source: Server.mode === 1 ? "/IC Assets/light/inner_circle_l.png" : "/IC Assets/inner_circle.png"
+//            source: Client.mode === 1 ? "/IC Assets/light/inner_circle_l.png" : "/IC Assets/inner_circle.png"
             fillMode: Image.PreserveAspectFit
         }
         Text {
             id: rpm_text
-//            text: randomValue //(Receiver.speedKmh * 60) / (2 * 3.14 * 3.3)
-//            text: (Receiver.speedKmh * 60) / (2 * 3.14 * 3.3)
-            text: (Receiver.speedKmh * 2.895).toFixed(0)
+//            text: randomValue //(Client.speedKmh * 60) / (2 * 3.14 * 3.3)
+//            text: (Client.speedKmh * 60) / (2 * 3.14 * 3.3)
+            text: (Client.speedKmh * 2.895).toFixed(0)
             anchors.centerIn: rpm_dial
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 30
             font.pixelSize: 30
 //            color: "white"
-//            color: Server.mode === 1 ? "#414141" : "#ffffff"
+//            color: Client.mode === 1 ? "#414141" : "#ffffff"
             color: "#ffffff"
             font.bold: true
 
@@ -314,9 +314,9 @@ ApplicationWindow {
              }
         }
          Connections{
-                target: Receiver
+                target: Client
                 onValueChanged: {
-                    rpm_text.targetrpm = (Receiver.speedKmh * 2.895).toFixed(0)
+                    rpm_text.targetrpm = (Client.speedKmh * 2.895).toFixed(0)
                     rpmAnimation.start()
                 }
          }
@@ -339,16 +339,16 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 50
             font.pixelSize: 30
-//            color: Server.gear === 1 ? "#87F1D0" : "#939395"
+//            color: Client.gear === 1 ? "#87F1D0" : "#939395"
 //            color: {
-//                if (Server.mode === 1){
-//                    if(Server.gear === 1){
+//                if (Client.mode === 1){
+//                    if(Client.gear === 1){
 //                        return "#7788f2"
 //                    }else{
 //                        return "#939395"
 //                    }
 //                } else{
-//                    if(Server.gear === 1){
+//                    if(Client.gear === 1){
 //                        return "#87f1d0"
 //                    }else{
 //                        return "#939395"
@@ -356,7 +356,7 @@ ApplicationWindow {
 //                }
 //            }
 
-            color: (Server.mode === 1) ? (Server.gear === 1 ? "#7788F2" : "#939395") : (Server.gear === 1 ? "#87F1D0" : "#939395")
+            color: (Client.mode === 1) ? (Client.gear === 1 ? "#7788F2" : "#939395") : (Client.gear === 1 ? "#87F1D0" : "#939395")
 
             font.bold: true
         }
@@ -368,8 +368,8 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 50
             font.pixelSize: 30
-//            color: Server.gear === 3 ? "#87F1D0" : "#939395"
-            color: (Server.mode === 1) ? (Server.gear === 3 ? "#7788F2" : "#939395") : (Server.gear === 3 ? "#87F1D0" : "#939395")
+//            color: Client.gear === 3 ? "#87F1D0" : "#939395"
+            color: (Client.mode === 1) ? (Client.gear === 3 ? "#7788F2" : "#939395") : (Client.gear === 3 ? "#87F1D0" : "#939395")
             font.bold: true
         }
         Text {
@@ -380,8 +380,8 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 50
             font.pixelSize: 30
-//            color: Server.gear === 4 ? "#87F1D0" : "#939395"
-            color: (Server.mode === 1) ? (Server.gear === 4 ? "#7788F2" : "#939395") : (Server.gear === 4 ? "#87F1D0" : "#939395")
+//            color: Client.gear === 4 ? "#87F1D0" : "#939395"
+            color: (Client.mode === 1) ? (Client.gear === 4 ? "#7788F2" : "#939395") : (Client.gear === 4 ? "#87F1D0" : "#939395")
             font.bold: true
         }
         Text {
@@ -392,8 +392,8 @@ ApplicationWindow {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 50
             font.pixelSize: 30
-//            color: Server.gear === 2 ? "#87F1D0" : "#939395"
-            color: (Server.mode === 1) ? (Server.gear === 2 ? "#7788F2" : "#939395") : (Server.gear === 2 ? "#87F1D0" : "#939395")
+//            color: Client.gear === 2 ? "#87F1D0" : "#939395"
+            color: (Client.mode === 1) ? (Client.gear === 2 ? "#7788F2" : "#939395") : (Client.gear === 2 ? "#87F1D0" : "#939395")
             font.bold: true
         }
     }
@@ -404,7 +404,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
 //        source: "/IC Assets/top_bar.png"
-        source: Server.mode === 1 ? "/IC Assets/light/top_bar_l.png" : "/IC Assets/top_bar.png"
+        source: Client.mode === 1 ? "/IC Assets/light/top_bar_l.png" : "/IC Assets/top_bar.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -413,7 +413,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
 //        source: "/IC Assets/top_bar_menu.png"
-        source: Server.mode === 1 ? "/IC Assets/light/top_bar_menu_l.png" : "/IC Assets/top_bar_menu.png"
+        source: Client.mode === 1 ? "/IC Assets/light/top_bar_menu_l.png" : "/IC Assets/top_bar_menu.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -425,24 +425,24 @@ ApplicationWindow {
         anchors.rightMargin: 104
         anchors.bottomMargin: 65
 //        source: "/IC Assets/left_dark.png"
-//        source: Server.indicatorLeft ? "/IC Assets/left_bright.png" : "/IC Assets/left_dark.png"
+//        source: Client.indicatorLeft ? "/IC Assets/left_bright.png" : "/IC Assets/left_dark.png"
 //        source:{
-//            if(Server.mode === 1){
-//                if(Server.indicatorLeft){
+//            if(Client.mode === 1){
+//                if(Client.indicatorLeft){
 //                    return "/IC Assets/light/left_bright_l.png"
 //                }else{
 //                    return "/IC Assets/light/left_dark_l.png"
 //                }
 //            }
 //            else{
-//                if(Server.indicatorLeft){
+//                if(Client.indicatorLeft){
 //                    return "/IC Assets/left_bright.png"
 //                }else{
 //                    return "/IC Assets/left_dark.png"
 //                }
 //            }
 //        }
-        source: (Server.mode === 1) ? (Server.indicatorLeft ? "/IC Assets/light/left_bright_l.png" : "/IC Assets/light/left_dark_l.png") : (Server.indicatorLeft ? "/IC Assets/left_bright.png" : "/IC Assets/left_dark.png")
+        source: (Client.mode === 1) ? (Client.indicatorLeft ? "/IC Assets/light/left_bright_l.png" : "/IC Assets/light/left_dark_l.png") : (Client.indicatorLeft ? "/IC Assets/left_bright.png" : "/IC Assets/left_dark.png")
         fillMode: Image.PreserveAspectFit
     }
 
@@ -453,8 +453,8 @@ ApplicationWindow {
         anchors.leftMargin: 96
         anchors.bottomMargin:65
 //        source: "/IC Assets/right_dark.png"
-//        source: Server.indicatorRight ? "/IC Assets/right_bright.png" : "/IC Assets/right_dark.png"
-        source: (Server.mode === 1) ? (Server.indicatorRight ? "/IC Assets/light/right_bright_l.png" : "/IC Assets/light/right_dark_l.png") : (Server.indicatorRight ? "/IC Assets/right_bright.png" : "/IC Assets/right_dark.png")
+//        source: Client.indicatorRight ? "/IC Assets/right_bright.png" : "/IC Assets/right_dark.png"
+        source: (Client.mode === 1) ? (Client.indicatorRight ? "/IC Assets/light/right_bright_l.png" : "/IC Assets/light/right_dark_l.png") : (Client.indicatorRight ? "/IC Assets/right_bright.png" : "/IC Assets/right_dark.png")
         fillMode: Image.PreserveAspectFit
     }
 
@@ -480,7 +480,7 @@ ApplicationWindow {
 //        anchors.topMargin: 2
 //        font.pixelSize: 11
 ////        color: "white"
-//        color: Server.mode === 1 ? "#414141" : "#ffffff"
+//        color: Client.mode === 1 ? "#414141" : "#ffffff"
 //    }
 
     Image{
@@ -488,7 +488,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
 //        source: "/IC Assets/bottom_bar.png"
-        source: Server.mode === 1 ? "/IC Assets/light/bottom_bar_l.png" : "/IC Assets/bottom_bar.png"
+        source: Client.mode === 1 ? "/IC Assets/light/bottom_bar_l.png" : "/IC Assets/bottom_bar.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -500,7 +500,7 @@ ApplicationWindow {
         anchors.bottomMargin: 55
         font.pixelSize: 25
 //        color: "white"
-        color: Server.mode === 1 ? "#414141" : "#ffffff"
+        color: Client.mode === 1 ? "#414141" : "#ffffff"
         font.bold: true
     }
      Connections{

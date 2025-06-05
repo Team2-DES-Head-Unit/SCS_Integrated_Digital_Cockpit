@@ -31,7 +31,7 @@ extern struct ControlData controlData;
 
 class Client : public QThread {
     Q_OBJECT
-    Q_PROPERTY(float speed READ getSpeedKmh NOTIFY speedReceived)
+    Q_PROPERTY(float speedKmh READ getSpeedKmh NOTIFY speedReceived)
     Q_PROPERTY(float distanceCm READ getDistance NOTIFY distanceReceived)
     Q_PROPERTY(int gear READ getGear NOTIFY gearChanged)
     Q_PROPERTY(bool indicatorLeft READ getIndicatorLeft NOTIFY indicatorLeftChanged)

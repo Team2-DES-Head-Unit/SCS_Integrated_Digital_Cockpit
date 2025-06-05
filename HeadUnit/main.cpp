@@ -11,7 +11,6 @@
 #include "clicknotier.h"
 
 #include "client.h" // vchan
-//#include "receiver.h" // socketCAN
 
 int main(int argc, char *argv[])
 {
@@ -21,9 +20,6 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    // register TimeProvider class(set on basic_func) to use on Qml
-    //    qmlRegisterType<TimeProvider>("timeprovider", 1, 0, "TimeProvider");
-
     TimeProvider timeProvider;
     SpeedProvider speedProvider;
     WeatherProvider weatherProvider;
@@ -32,7 +28,6 @@ int main(int argc, char *argv[])
     BluetoothManager btManager;
     MirrorProvider mirrorProvider;
     ClickNotifier clickNotifier;
-//    Receiver receiver;
     Client client;
 
 //    QCommandLineParser parser;
@@ -63,8 +58,6 @@ int main(int argc, char *argv[])
 //        }
 //    }
 
-//    receiver.initialize();
-//    receiver.start();
     client.start();
 
     engine.rootContext()->setContextProperty("timeProvider", &timeProvider);
@@ -73,20 +66,10 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("musicPlayer", &musicPlayer);
     engine.rootContext()->setContextProperty("youtubePlayerProvider", &youtubePlayerProvider);
     engine.rootContext()->setContextProperty("btManager", &btManager);
-//    engine.rootContext()->setContextProperty("Receiver", &receiver);
     engine.rootContext()->setContextProperty("client", &client);
     engine.rootContext()->setContextProperty("clickNotifier", &clickNotifier);
     engine.rootContext()->setContextProperty("MirrorProvider", &mirrorProvider);
     qmlRegisterType<YoutubePlayer>("youtubePlayer", 1, 0, "YoutubePlayer");
-//    qmlRegisterType<MirrorProvider>("QtQuick.mirroring", 1, 0, "MirrorProvider");
-
-//    // music test
-//    QString songtitle = "Hanumankind-Big_Dawgs.mp3";
-//    musicPlayer.playMusic(musicPlayer.getPathForSong(songtitle));
-
-//    // playlist test
-//    QString songtitle = "Hanumankind-Big_Dawgs.mp3";
-//    musicPlayer.getCurrentPlayList(songtitle);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -95,9 +78,6 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-
-    // std::thread client_thread(start_client);
-    // client_thread.detach();
 
     return app.exec();
 }

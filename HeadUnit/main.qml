@@ -69,9 +69,9 @@ Window {
             repeat: true
             running: true
             onTriggered: {
-                if (Receiver.speedKmh > 0){
+                if (client.speedKmh > 0){
                     root.elapsedTime += 1;
-                    root.totalDistance += Receiver.speedKmh / 3600;
+                    root.totalDistance += client.speedKmh / 3600;
                     root.averageSpeed = root.totalDistance / (root.elapsedTime / 3600);
                 }
             }
@@ -111,7 +111,7 @@ Window {
 //                    color: "#ffffff"
                     color: clickNotifier.clicked ? "#414141" : "#ffffff"
 //                    text: speedProvider.currentSpeed    //qsTr("75")
-                    text: Receiver.speedKmh.toFixed(0)
+                    text: client.speedKmh.toFixed(0)
                     anchors.verticalCenterOffset: -10
                     anchors.horizontalCenterOffset: 0
                 }
@@ -136,9 +136,9 @@ Window {
 //            onSpeedChanged: {
 //                speed_value.text = speedProvider.currentSpeed
 //            }
-            target: Receiver
+            target: client
             onSpeedChanged: {
-                speed_value.text = Receiver.speedKmh
+                speed_value.text = client.speedKmh
             }
         }
 
@@ -997,7 +997,7 @@ Window {
                     topMargin: 6
                 }
 
-                text: Receiver.distanceCm.toFixed(2) + " cm"
+                text: client.distanceCm.toFixed(2) + " cm"
                 font.pixelSize: 18
                 color: clickNotifier.clicked ? "#414141" : "#ffffff"
             }
@@ -1008,7 +1008,7 @@ Window {
                 y: 352
                 fillMode: Image.PreserveAspectFit
                 source: "HU_Assets/Components/PDC/alter_red.png"
-                visible: Receiver.distanceCm <= 15
+                visible: client.distanceCm <= 15
             }
 
             Image {
@@ -1017,7 +1017,7 @@ Window {
                 y: 368
                 fillMode: Image.PreserveAspectFit
                 source: "HU_Assets/Components/PDC/alter_yellow.png"
-                visible: Receiver.distanceCm > 15 && Receiver.distanceCm <= 25
+                visible: client.distanceCm > 15 && client.distanceCm <= 25
             }
 
             Image {
@@ -1026,7 +1026,7 @@ Window {
                 y: 385
                 fillMode: Image.PreserveAspectFit
                 source: "HU_Assets/Components/PDC/alter_green.png"
-                visible: Receiver.distanceCm > 25
+                visible: client.distanceCm > 25
             }
         }
     }
