@@ -128,7 +128,7 @@ int get_domid(const std::string& name){
 
 void vchan_server(uint32_t domid){
     const char *xs_path = "/local/domain/0/data/piracer/hu";
-    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, xs_path, 0, 0); // 4096
+    struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, xs_path, 4096, 4096); // 4096
     // struct libxenvchan *server = libxenvchan_server_init(nullptr, domid, "piracer/hu", sizeof(ControlData), sizeof(ControlData));
     // logger, domain id,xenstore path, receive buffer(read) min size, send buffer(write) min size
     
