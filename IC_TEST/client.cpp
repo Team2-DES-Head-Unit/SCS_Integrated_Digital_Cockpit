@@ -41,9 +41,9 @@ float Client::EMA(float new_val, float prev_val){
 
 void Client::setMode(int mode){
     if (m_mode != mode){
-            m_mode = mode;
-            emit modeChanged();
-        }
+        m_mode = mode;
+        emit modeChanged();
+    }
 }
 
 void Client::run(){

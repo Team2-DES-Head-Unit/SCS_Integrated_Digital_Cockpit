@@ -43,7 +43,7 @@ private:
     int m_gear = 0;
     bool m_indicatorLeft = false;
     bool m_indicatorRight = false;
-    int m_mode;
+    int m_mode = 0;
 
     void processControlData();
 
