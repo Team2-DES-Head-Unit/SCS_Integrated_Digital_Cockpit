@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.1
 ApplicationWindow {
     id: bg_window
     visible: true
-    width: 1280
+    width: 1024
 //    visibility: Window.FullScreen
     height:400
 //    color: "#28282c"
