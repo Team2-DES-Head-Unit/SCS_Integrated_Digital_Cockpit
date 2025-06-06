@@ -63,6 +63,7 @@ if(ANDROID)
       basic_func.cpp
       bluetoothmanager.cpp
       client.cpp
+      server.cpp
 
       qml.qrc
       media_contents.qrc
@@ -84,6 +85,7 @@ else()
       basic_func.cpp
       bluetoothmanager.cpp
       client.cpp
+      server.cpp
 
       qml.qrc
       media_contents.qrc
