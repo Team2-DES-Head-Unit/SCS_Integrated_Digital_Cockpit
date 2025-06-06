@@ -10,9 +10,10 @@
 #include <QDebug>
 #include <QThread>
 
-extern "C"{
-    #include <libxenvchan.h>
-}
+// extern "C"{
+//     #include <libxenvchan.h>
+// }
+#include <libxenvchan_wrapper.h>
 
 class Server : public QObject{
     Q_OBJECT

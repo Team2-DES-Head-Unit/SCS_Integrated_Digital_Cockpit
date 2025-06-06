@@ -59,6 +59,7 @@ public:
     int getGear() const { return m_gear; }
     bool getIndicatorLeft() const { return m_indicatorLeft; }
     bool getIndicatorRight() const { return m_indicatorRight; }
+    int mode() const { return m_mode; }
 
     float EMA(float new_val, float prev_val);
 
