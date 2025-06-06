@@ -55,6 +55,7 @@ if(ANDROID)
       youtube_player.h
       bluetoothmanager.h
       client.h
+      server.h
       mirror_provider.h
       clicknotier.h
       libxenvchan_wrapper.h
@@ -75,6 +76,7 @@ else()
       youtube_player.h
       bluetoothmanager.h
       client.h
+      server.h
       mirror_provider.h
       clicknotier.h
       libxenvchan_wrapper.h
