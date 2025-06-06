@@ -11,6 +11,7 @@
 #include "clicknotier.h"
 
 #include "client.h" // vchan
+#include "server.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
     MirrorProvider mirrorProvider;
     ClickNotifier clickNotifier;
     Client client;
+    Server server;
 
 //    QCommandLineParser parser;
 //    parser.setApplicationDescription("Qt Wayland Application");
@@ -59,6 +61,7 @@ int main(int argc, char *argv[])
 //    }
 
     client.start();
+    server.start();
 
     engine.rootContext()->setContextProperty("timeProvider", &timeProvider);
     engine.rootContext()->setContextProperty("speedProvider", &speedProvider);
@@ -67,6 +70,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("youtubePlayerProvider", &youtubePlayerProvider);
     engine.rootContext()->setContextProperty("btManager", &btManager);
     engine.rootContext()->setContextProperty("client", &client);
+    engine.rootContext()->setContextProperty("server", &server);
     engine.rootContext()->setContextProperty("clickNotifier", &clickNotifier);
     engine.rootContext()->setContextProperty("MirrorProvider", &mirrorProvider);
     qmlRegisterType<YoutubePlayer>("youtubePlayer", 1, 0, "YoutubePlayer");

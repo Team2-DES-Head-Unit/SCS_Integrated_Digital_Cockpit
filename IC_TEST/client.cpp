@@ -14,11 +14,24 @@ Client::Client(QObject *parent): QThread(parent){
     } else{
         qDebug() << "Vchan client initialized success\n";
     }
+
+    const char *huxs_path = "/local/domain/1/data/hu";
+    vchanClient2 = libxenvchan_client_init(nullptr, 1, huxs_path);
+    if (!vchanClient2){
+        qDebug() << "Failed to create vchan client\n";
+        perror("libxenvchan_client_init");
+        return;
+    } else{
+        qDebug() << "Vchan client initialized success\n";
+    }
 }
 
 Client::~Client(){
     if (vchanClient){
         libxenvchan_close(vchanClient);
+    }
+    if (vchanClient2){
+        libxenvchan_close(vchanClient2);
     }
 }
 
@@ -26,44 +39,75 @@ float Client::EMA(float new_val, float prev_val){
     return SMOOTHING_FACTOR * new_val + (1-SMOOTHING_FACTOR) * prev_val;
 }
 
-void Client::run(){
-    if (!vchanClient){
-        qDebug() << "Failed to create vchan client\n";
-        return;
-    }
-
-    qDebug() << "Connected to dom0\n";
-
-    while (true){
-//        ControlData new_data{};
-//        if (libxenvchan_wait(vchanClient))
-
-        int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
-        if (read_len == sizeof(ControlData)){
-            processControlData();
-        } else{
-            qDebug() << "Failed to read data\n";
+void Client::setMode(int mode){
+    if (m_mode != mode){
+            m_mode = mode;
+            emit modeChanged();
         }
+}
 
-//        speed_prev = control_data.speed;
-//        control_data = new_data;
-//        control_data.speed = EMA(new_data.speed, speed_prev);
+void Client::run(){
+    qDebug() << "Client run() started\n";
 
-//        emit speedReceived(control_data.speed);
+    // if (!vchanClient){
+    //     qDebug() << "Failed to create vchan client\n";
+    //     return;
+    // }
 
-//        qDebug() << "Received control data - "
-//                 << " Speed : " << (control_data.speed)
-//                 << " Distance : " << (control_data.distance)
-//                 << " Gear : " << (control_data.gear_P ? "P" :
-//                                   control_data.gear_D ? "D" :
-//                                   control_data.gear_R ? "R" :
-//                                   control_data.gear_N ? "N" : "Unknown");
+    // qDebug() << "Connected to dom0\n";
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
-    }
+    // while (true){
+    //     int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
+    //     if (read_len == sizeof(ControlData)){
+    //         processControlData();
+    //     } else{
+    //         qDebug() << "Failed to read control data\n";
+    //     }
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
+    // }
 
-//    libxenvchan_close(vchanClient);
-//    vchanClient = nullptr;
+    std::thread controlDataThread([&]() {
+        if (!vchanClient){
+            qDebug() << "Failed to create vchan client\n";
+            return;
+        }
+        qDebug() << "Connected to dom0\n";
+
+        while (true) {
+            int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
+            if (read_len == sizeof(ControlData)) {
+                processControlData();
+            } else {
+                qDebug() << "Failed to read control data";
+            }
+            // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    });
+
+    std::thread modeReceiverThread([&]() {
+        if (!vchanClient2){
+            qDebug() << "Failed to create vchan client2\n";
+            return;
+        }
+        qDebug() << "Connected to dom1\n";
+
+        while (true) {
+            int receivedMode = -1;
+            if (libxenvchan_data_ready(vchanClient2) >= sizeof(int)) {
+                int read_len = libxenvchan_read(vchanClient2, &receivedMode, sizeof(receivedMode));
+                if (read_len == sizeof(int)) {
+                    qDebug() << "Received mode from HU:" << receivedMode;
+                    setMode(receivedMode);
+                } else {
+                    qDebug() << "Failed to read mode";
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+    });
+
+    controlDataThread.detach();
+    modeReceiverThread.detach();
 }
 
 void Client::processControlData(){

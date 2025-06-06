@@ -29,10 +29,11 @@ class Client: public QThread
     Q_PROPERTY(int gear READ getGear NOTIFY gearChanged)
     Q_PROPERTY(bool indicatorLeft READ getIndicatorLeft NOTIFY indicatorLeftChanged)
     Q_PROPERTY(bool indicatorRight READ getIndicatorRight NOTIFY indicatorRightChanged)
-//    Q_PROPERTY(int mode READ mode WRITE setMode NOTIFY modeChanged)
+    Q_PROPERTY(int mode READ mode WRITE setMode NOTIFY modeChanged)
 
 private:
-    struct libxenvchan *vchanClient = nullptr;
+    struct libxenvchan *vchanClient = nullptr; // server : dom0
+    struct libxenvchan *vchanClient2 = nullptr; // server : hu
     ControlData control_data;
 
     float speed_prev = 0;
@@ -42,7 +43,7 @@ private:
     int m_gear = 0;
     bool m_indicatorLeft = false;
     bool m_indicatorRight = false;
-//    int m_mode;
+    int m_mode;
 
     void processControlData();
 
@@ -61,7 +62,7 @@ public:
 
     float EMA(float new_val, float prev_val);
 
-//    int initialize();
+    void setMode(int mode);
 
 protected:
     void run() override;
@@ -71,7 +72,7 @@ signals:
     void gearChanged();
     void indicatorLeftChanged();
     void indicatorRightChanged();
-//    void modeChanged();
+    void modeChanged();
 };
 
 #endif // CLIENT_H
