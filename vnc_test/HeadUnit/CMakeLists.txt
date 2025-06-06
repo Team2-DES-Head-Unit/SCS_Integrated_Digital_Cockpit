@@ -57,6 +57,7 @@ if(ANDROID)
       client.h
       mirror_provider.h
       clicknotier.h
+      libxenvchan_wrapper.h
 
       basic_func.cpp
       bluetoothmanager.cpp
@@ -76,6 +77,7 @@ else()
       client.h
       mirror_provider.h
       clicknotier.h
+      libxenvchan_wrapper.h
 
       basic_func.cpp
       bluetoothmanager.cpp
