@@ -20,6 +20,7 @@ struct ControlData {
     uint8_t gear_N;
     uint8_t indicator_l;
     uint8_t indicator_r;
+    uint8_t mode;
 };
 
 class Client: public QThread
@@ -33,7 +34,6 @@ class Client: public QThread
 
 private:
     struct libxenvchan *vchanClient = nullptr; // server : dom0
-    struct libxenvchan *vchanClient2 = nullptr; // server : hu
     ControlData control_data;
 
     float speed_prev = 0;

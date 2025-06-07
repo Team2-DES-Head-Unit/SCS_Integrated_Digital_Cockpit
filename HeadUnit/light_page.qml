@@ -80,7 +80,7 @@ Rectangle{
                 clickNotifier.setTrue()
                 check_mode.x = 102;
 //                client.send_mode_to_server(1);
-                server.sendModeToIC(1);
+                client.sendModeToIC(1);
             }
         }
 
@@ -119,7 +119,7 @@ Rectangle{
                 clickNotifier.setFalse()
                 check_mode.x = 295
 //                client.send_mode_to_server(0);
-                server.sendModeToIC(0);
+                client.sendModeToIC(0);
             }
         }
     }

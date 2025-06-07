@@ -36,6 +36,7 @@ struct ControlData {
     uint8_t gear_N;
     uint8_t indicator_l;
     uint8_t indicator_r;
+    uint8_t mode;
 };
 
 ControlData control_data;
@@ -164,11 +165,6 @@ void vchan_server(uint32_t domid){
               << " | Distance: " << C_data.distance
               << std::endl;
 
-        // if (!libxenvchan_is_open(server)){
-        //     std::cerr << "Client not connected\n";
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        //     continue;
-        // }
         if (libxenvchan_is_open(server)){
             int space = libxenvchan_buffer_space(server);
             std::cerr << "available buffer space : " << space << std::endl;
@@ -195,6 +191,21 @@ void vchan_server(uint32_t domid){
         //     continue;
         // }
         // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // send every 100ms
+
+        // receive mode data from domu1 hu
+        if (domid == DOMU1_ID){
+            if (libxenvchan_data_ready(server) >= sizeof(uint8_t)) {
+                uint8_t received_mode;
+                int read_bytes = libxenvchan_read(server, &received_mode, sizeof(received_mode));
+                if (read_bytes == sizeof(received_mode)) {
+                    std::cerr << "[HU -> dom0] Received mode: " << static_cast<int>(received_mode) << std::endl;
+                    {
+                        std::lock_guard<std::mutex> lock(mutex);
+                        control_data.mode = received_mode;
+                    }
+                }
+            }
+        }
     }
     libxenvchan_close(server);
 }
@@ -218,7 +229,3 @@ int main() {
 }
 
 // check dom channel : xenstore-ls -f
-
-// xenstore route
-// /local/domain/0/data/vchan/control/
-// /local/domain/2/data/vchan/control/

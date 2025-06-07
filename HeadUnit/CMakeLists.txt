@@ -55,15 +55,12 @@ if(ANDROID)
       youtube_player.h
       bluetoothmanager.h
       client.h
-      server.h
       mirror_provider.h
       clicknotier.h
-      libxenvchan_wrapper.h
 
       basic_func.cpp
       bluetoothmanager.cpp
       client.cpp
-      server.cpp
 
       qml.qrc
       media_contents.qrc
@@ -77,15 +74,12 @@ else()
       youtube_player.h
       bluetoothmanager.h
       client.h
-      server.h
       mirror_provider.h
       clicknotier.h
-      libxenvchan_wrapper.h
 
       basic_func.cpp
       bluetoothmanager.cpp
       client.cpp
-      server.cpp
 
       qml.qrc
       media_contents.qrc

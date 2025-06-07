@@ -10,10 +10,10 @@
 #include <QDebug>
 #include <QThread>
 // #include <libxenvchan.h>
-// extern "C"{
-//     #include <libxenvchan.h>
-// }
-#include <libxenvchan_wrapper.h>
+extern "C"{
+    #include <libxenvchan.h>
+}
+// #include <libxenvchan_wrapper.h>
 
 struct ControlData {
     float throttle;
@@ -26,6 +26,7 @@ struct ControlData {
     uint8_t gear_N;
     uint8_t indicator_l;
     uint8_t indicator_r;
+    uint8_t mode;
 };
 
 extern struct ControlData controlData;
@@ -67,6 +68,8 @@ public:
 //    int battery() const { return m_battery; }
 
     float EMA(float new_val, float prev_val);
+
+    Q_INVOKABLE void sendModeToIC(int mode);
 
 protected:
     void run() override;

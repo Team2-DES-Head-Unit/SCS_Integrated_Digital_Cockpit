@@ -14,24 +14,11 @@ Client::Client(QObject *parent): QThread(parent){
     } else{
         qDebug() << "Vchan client initialized success\n";
     }
-
-    const char *huxs_path = "/local/domain/1/data/hu";
-    vchanClient2 = libxenvchan_client_init(nullptr, 1, huxs_path);
-    if (!vchanClient2){
-        qDebug() << "Failed to create vchan client\n";
-        perror("libxenvchan_client_init");
-        return;
-    } else{
-        qDebug() << "Vchan client initialized success\n";
-    }
 }
 
 Client::~Client(){
     if (vchanClient){
         libxenvchan_close(vchanClient);
-    }
-    if (vchanClient2){
-        libxenvchan_close(vchanClient2);
     }
 }
 
@@ -49,65 +36,65 @@ void Client::setMode(int mode){
 void Client::run(){
     qDebug() << "Client run() started\n";
 
-    // if (!vchanClient){
-    //     qDebug() << "Failed to create vchan client\n";
-    //     return;
-    // }
+    if (!vchanClient){
+        qDebug() << "Failed to create vchan client\n";
+        return;
+    }
 
-    // qDebug() << "Connected to dom0\n";
+    qDebug() << "Connected to dom0\n";
 
-    // while (true){
-    //     int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
-    //     if (read_len == sizeof(ControlData)){
-    //         processControlData();
-    //     } else{
-    //         qDebug() << "Failed to read control data\n";
+    while (true){
+        int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
+        if (read_len == sizeof(ControlData)){
+            processControlData();
+        } else{
+            qDebug() << "Failed to read control data\n";
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
+    }
+
+    // std::thread controlDataThread([&]() {
+    //     if (!vchanClient){
+    //         qDebug() << "Failed to create vchan client\n";
+    //         return;
     //     }
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
-    // }
+    //     qDebug() << "Connected to dom0\n";
 
-    std::thread controlDataThread([&]() {
-        if (!vchanClient){
-            qDebug() << "Failed to create vchan client\n";
-            return;
-        }
-        qDebug() << "Connected to dom0\n";
+    //     while (true) {
+    //         int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
+    //         if (read_len == sizeof(ControlData)) {
+    //             processControlData();
+    //         } else {
+    //             qDebug() << "Failed to read control data";
+    //         }
+    //         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //     }
+    // });
 
-        while (true) {
-            int read_len = libxenvchan_read(vchanClient, &control_data, sizeof(control_data));
-            if (read_len == sizeof(ControlData)) {
-                processControlData();
-            } else {
-                qDebug() << "Failed to read control data";
-            }
-            // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-    });
+    // std::thread modeReceiverThread([&]() {
+    //     if (!vchanClient2){
+    //         qDebug() << "Failed to create vchan client2\n";
+    //         return;
+    //     }
+    //     qDebug() << "Connected to dom1\n";
 
-    std::thread modeReceiverThread([&]() {
-        if (!vchanClient2){
-            qDebug() << "Failed to create vchan client2\n";
-            return;
-        }
-        qDebug() << "Connected to dom1\n";
+    //     while (true) {
+    //         int receivedMode = -1;
+    //         if (libxenvchan_data_ready(vchanClient2) >= sizeof(int)) {
+    //             int read_len = libxenvchan_read(vchanClient2, &receivedMode, sizeof(receivedMode));
+    //             if (read_len == sizeof(int)) {
+    //                 qDebug() << "Received mode from HU:" << receivedMode;
+    //                 setMode(receivedMode);
+    //             } else {
+    //                 qDebug() << "Failed to read mode";
+    //             }
+    //         }
+    //         std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    //     }
+    // });
 
-        while (true) {
-            int receivedMode = -1;
-            if (libxenvchan_data_ready(vchanClient2) >= sizeof(int)) {
-                int read_len = libxenvchan_read(vchanClient2, &receivedMode, sizeof(receivedMode));
-                if (read_len == sizeof(int)) {
-                    qDebug() << "Received mode from HU:" << receivedMode;
-                    setMode(receivedMode);
-                } else {
-                    qDebug() << "Failed to read mode";
-                }
-            }
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-    });
-
-    controlDataThread.detach();
-    modeReceiverThread.detach();
+    // controlDataThread.detach();
+    // modeReceiverThread.detach();
 }
 
 void Client::processControlData(){
@@ -122,6 +109,8 @@ void Client::processControlData(){
 
     bool newIndicatorLeft = control_data.indicator_l;
     bool newIndicatorRight = control_data.indicator_r;
+
+    int newMode = control_data.mode;
 
     if (m_speedFiltered != newSpeedFiltered){
         m_speedFiltered = newSpeedFiltered;
@@ -141,5 +130,9 @@ void Client::processControlData(){
     if (m_indicatorRight != newIndicatorRight){
         m_indicatorRight = newIndicatorRight;
         emit indicatorRightChanged();
+    }
+
+    if (m_mode != newMode){
+        setMode(newMode);
     }
 }
