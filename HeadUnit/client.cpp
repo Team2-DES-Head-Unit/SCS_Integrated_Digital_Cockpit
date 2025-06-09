@@ -26,7 +26,7 @@ float Client::EMA(float new_val, float prev_val){
     return SMOOTHING_FACTOR * new_val + (1-SMOOTHING_FACTOR) * prev_val;
 }
 
-void Client::sendModeToDom0(uint8_t mode){
+void Client::sendModeToIC(uint8_t mode){
     if (!vchanClient){
         qDebug() << "Failed to create vchan client\n";
         perror("libxenvchan_client_init");
