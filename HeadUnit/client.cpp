@@ -26,13 +26,15 @@ float Client::EMA(float new_val, float prev_val){
     return SMOOTHING_FACTOR * new_val + (1-SMOOTHING_FACTOR) * prev_val;
 }
 
-void Client::sendModeToIC(uint8_t mode){
+void Client::sendModeToIC(int mode){
     if (!vchanClient){
         qDebug() << "Failed to create vchan client\n";
         perror("libxenvchan_client_init");
     }
 
-    int written = libxenvchan_write(vchanClient, &mode, sizeof(mode));
+    uint8_t mode_u8 = static_cast<uint8_t>(mode);
+
+    int written = libxenvchan_write(vchanClient, &mode_u8, sizeof(mode_u8));
     if (written <= 0) {
         qDebug() << "Failed to write mode to dom0";
     } else {
