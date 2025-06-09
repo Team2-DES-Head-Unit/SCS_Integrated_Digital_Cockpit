@@ -50,7 +50,7 @@ void Client::run(){
         } else{
             qDebug() << "Failed to read control data\n";
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // set cycle with dom0
     }
 
     // std::thread controlDataThread([&]() {
