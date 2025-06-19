@@ -28,6 +28,7 @@ CMDLINE_QUIET = "quiet"
 # You can define CMDLINE_DEBUG as "debug" in your local.conf or distro.conf
 # to enable kernel debugging.
 CMDLINE_DEBUG ?= ""
+CMDLINE_DSI = "video=DSI-1:400x1280M@60"
 
 # Add a request to isolate processors from the Linux scheduler. ISOLATED_CPUS
 # may have the form of a comma separated list of processor numbers "0,1,3", a
@@ -65,6 +66,7 @@ CMDLINE = " \
     ${CMDLINE_IFNAMES} \
     ${CMDLINE_LOGO} \
     ${CMDLINE_QUIET} \
+    ${CMDLINE_DSI} \
     "
 
 do_compile() {

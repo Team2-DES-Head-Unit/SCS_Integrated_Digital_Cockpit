@@ -1,0 +1,137 @@
+/*
+ * vc4-kms-v3d-overlay.dts
+ */
+/dts-v1/;
+/plugin/;
+/ {
+	compatible = "brcm,bcm2835";
+
+
+	fragment@0 {
+		target-path = "/reserved-memory/linux,cma";
+		frag0: __overlay__ {
+			/*
+			 * The default size when using this overlay is 256 MB
+			 * and should be kept as is for backwards
+			 * compatibility.
+			 */
+			size = <0x10000000>;
+		};
+	};
+
+	fragment@2 {
+		target = <&fb>;
+		__overlay__  {
+			status = "disabled";
+		};
+	};
+
+	fragment@3 {
+		target = <&pixelvalve0>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target = <&pixelvalve1>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <&pixelvalve2>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@6 {
+		target = <&hvs>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@7 {
+		target = <&hdmi>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@8 {
+		target = <&v3d>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@9 {
+		target = <&vc4>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@10 {
+		target = <&clocks>;
+		__overlay__  {
+			claim-clocks = <
+				34
+				35
+				15
+				16
+			>;
+		};
+	};
+
+	fragment@11 {
+		target = <&vec>;
+		__dormant__  {
+			status = "okay";
+		};
+	};
+
+	fragment@12 {
+		target = <&txp>;
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@13 {
+		target = <&hdmi>;
+		__dormant__  {
+			dmas;
+		};
+	};
+
+	fragment@14 {
+		target-path = "/chosen";
+		__overlay__  {
+			bootargs = "snd_bcm2835.enable_hdmi=0";
+		};
+	};
+	fragment@15 {
+		target-path = "/soc/i2c@7ef04500";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@16 {
+		target-path = "/soc/i2c@7ef09500";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	__overrides__ {
+		audio   = <0>,"!13";
+		noaudio = <0>,"=13";
+		composite = <0>, "=11";
+		nohdmi = <0>, "-1-7";
+	};
+};

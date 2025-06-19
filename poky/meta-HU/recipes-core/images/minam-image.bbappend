@@ -1,4 +1,5 @@
 IMG_BASE = " \
+    dnsmasq \
     python3 \
     python3-numpy \ 
     wpa-supplicant \
@@ -30,6 +31,16 @@ IMG_BASE = " \
     pulseaudio-server \
     pulseaudio-misc \
     pulseaudio-module-dbus-protocol \
+    dtc \
+    xserver-xorg \
+    xserver-common \
+    xf86-video-fbdev \
+    xeyes \
+    xf86-input-libinput \
+    xinit \
+    xterm \
+    libx11 \
+    x11vnc \
 "
 
 Mirroring =" \
@@ -84,7 +95,6 @@ QT_PKGS = " \
     qtlocation-plugins \
     qtlocation-qmlplugins \
     qtlocation \ 
-    qtwebengine \
 "
 
 
@@ -112,11 +122,18 @@ PIRACER = " \
     framebuf \
     typing \
     connectionmanager \
+    vchancontrol \
+    control \
 "
 
-Application =" \
-    hu \
+IC =" \
     ic \
+    domclient \
+    startic \
+"
+HeadUnit =" \
+    hu \
+    starthu \
 "
 
 CLIENT=" \
@@ -124,8 +141,6 @@ CLIENT=" \
     control \
     client \
     clientsetting \
-    picpp \
-    pigpio \
 "
 COMMUNICATION =" \
     vsomeip \
@@ -136,21 +151,39 @@ COMMUNICATION =" \
 
 XEN=" \
     xen-tools \
+    xenbg \
+    tigervnc \
+    openbox \
+    xenauto \
 "
 
 SENSORDATA=" \
-    control \
     picpp \
     pigpio \
+"
+
+
+VNC=" \
+    aml \
+    neatvnc \
+"
+
+DOMUI=" \
+    ${IC} \
+"
+DOMUH=" \
+    ${HeadUnit} \
+"
+DOM=" \
+    ${XEN} \
+    ${PIRACER} \
 "
 IMAGE_INSTALL += " \
     ${GSTREAMER_PKGS} \
     ${IMG_BASE} \
     ${QT_BASE} \
     ${QT_PKGS} \
-    ${PIRACER} \
-    ${XEN} \
-    ${SENSORDATA} \
+    ${DOM} \
 "
 
 

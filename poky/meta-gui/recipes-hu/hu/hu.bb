@@ -2,7 +2,7 @@ SUMMARY = "Head unit GUI"
 DESCRIPTION = "Head unit GUI"
 LICENSE = "CLOSED"
 
-SRC_URI = "git://github.com/Team2-DES-Head-Unit/DES_PDC-System.git;branch=HeadUnit;protocol=https"
+SRC_URI = "git://github.com/Team2-DES-Head-Unit/SCS_Integrated_Digital_Cockpit.git;branch=vchan;protocol=https"
 SRCREV ="${AUTOREV}"
 SRC_URI[sha256sum] = "fe192784ee4a1900f9aa87a633484286657c49a7fe69bcf7663ba53d74122ac6"
 
@@ -10,8 +10,8 @@ S = "${WORKDIR}/git/HeadUnit"
 
 inherit cmake_qt5 
 
-DEPENDS += "qtbase qtdeclarative qtquickcontrols2 qtmultimedia qtwebengine qtconnectivity vsomeip"
-
+DEPENDS += "qtbase qtdeclarative qtquickcontrols2 qtmultimedia qtconnectivity vsomeip xen-tools"
+RDEPENDS:${PN} += "xen-tools"
 
 do_install() {
     install -d ${D}/usr/bin/hu

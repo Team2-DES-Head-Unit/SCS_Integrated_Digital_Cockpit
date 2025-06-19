@@ -1,4 +1,5 @@
 PACKAGECONFIG:append = " journald"
+PACKAGECONFIG:append:pn-qtbase = " vnc"
 
 # set QPA
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"

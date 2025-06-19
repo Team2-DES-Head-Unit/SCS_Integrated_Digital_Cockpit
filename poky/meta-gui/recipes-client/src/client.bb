@@ -3,7 +3,7 @@ DESCRIPTION = "Client application using vSomeIP"
 LICENSE = "CLOSED"
 
 SRC_URI = "git://github.com/Team2-DES-Head-Unit/DES_Head-Unit.git;branch=master;protocol=https"
-SRCREV = "a4c2b8e1e0029df57b0fc61f604ccba965547a88"
+SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 

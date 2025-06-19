@@ -34,8 +34,7 @@ ConditionPathExists=/dev/tty0
 # Requires systemd-notify.so Weston plugin.
 Type=notify
 EnvironmentFile=/etc/default/weston
-ExecStartPre=/bin/sleep 3
-ExecStart=/usr/bin/weston --modules=systemd-notify.so
+ExecStart=/usr/bin/weston --modules=systemd-notify.so,screen-share.so
 
 # Optional watchdog setup
 #TimeoutStartSec=60

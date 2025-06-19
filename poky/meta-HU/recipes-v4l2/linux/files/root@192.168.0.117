@@ -1,0 +1,8 @@
+kernel = "/home/root/Image"
+cmdline = "console=hvc0 earlyprintk=xen sync_console root=/dev/xvda"
+memory = "512"
+name = "hu"
+vcpus = 1
+serial="pty"
+disk = [ 'file:/home/root/minam-image-raspberrypi4-64.ext3,xvda,w' ]
+vif=[ 'mac=00:11:22:66:88:22,bridge=xenbr0' ]
