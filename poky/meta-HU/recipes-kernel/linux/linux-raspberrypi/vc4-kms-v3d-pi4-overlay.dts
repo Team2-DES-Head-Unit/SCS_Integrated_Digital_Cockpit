@@ -1,0 +1,191 @@
+/*
+ * vc4-kms-v3d-pi4-overlay.dts
+ */
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2711";
+
+	fragment@1 {
+		target-path = "/soc/i2c@7ef04500";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@2 {
+		target-path = "/soc/i2c@7ef09500";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+
+	fragment@5 {
+		target-path = "/soc/hvs@7e400000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@6 {
+		target-path = "/soc/pixelvalve@7e206000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@7 {
+		target-path = "/soc/pixelvalve@7e207000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@8 {
+		target-path = "/soc/pixelvalve@7e20a000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@9 {
+		target-path = "/soc/pixelvalve@7ec12000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@10 {
+		target-path = "/soc/pixelvalve@7e216000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@11 {
+		target-path = "/v3dbus/v3d@7ec04000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@12 {
+		target-path = "/gpu";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@13 {
+		target-path = "/soc/txp@7e004000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@14 {
+		target-path = "/soc/fb";
+		__overlay__  {
+			status = "disabled";
+		};
+	};
+
+	fragment@15 {
+		target-path = "/soc/firmwarekms@7e600000";
+		__overlay__  {
+			status = "disable";
+		};
+	};
+
+	fragment@16 {
+		target = <&vec>;
+		__overlay__  {
+			status = "disabled";
+		};
+	};
+
+	fragment@17 {
+		target = <&hdmi0>;
+		__dormant__  {
+			dmas;
+		};
+	};
+
+	fragment@18 {
+		target = <&hdmi1>;
+		__dormant__  {
+			dmas;
+		};
+	};
+
+
+
+	fragment@19 {
+		target-path = "/chosen";
+		__overlay__  {
+			bootargs = "snd_bcm2835.enable_hdmi=0 clk_ignore_unused";
+		};
+	};
+
+	fragment@20 {
+		target-path = "/soc/clock@7ef00000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@21 {
+		target-path = "/soc/pixelvalve@7ec12000";
+		__dormant__  {
+			status = "okay";
+		};
+	};
+
+	fragment@22 {
+		target-path = "/soc/vec@7ec13000";
+		__dormant__  {
+			status = "okay";
+		};
+	};
+
+	fragment@23 {
+		target-path = "/soc/interrupt-controller@7ef00100";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+	fragment@24 {
+		target-path = "/reserved-memory/linux,cma";
+		frag0: __overlay__ {
+			/*
+			 * The default size when using this overlay is 256 MB
+			 * and should be kept as is for backwards
+			 * compatibility.
+			 */
+			size = <0x10000000>;
+		};
+	};
+	__overrides__ {
+		audio   = <0>,"!17";
+		audio1   = <0>,"!18";
+		noaudio = <0>,"=17", <0>,"=18";
+		composite = <0>, "!1",
+			    <0>, "!2",
+			    <0>, "!3",
+			    <0>, "!4",
+			    <0>, "!6",
+			    <0>, "!7",
+			    <0>, "!8",
+			    <0>, "!9",
+			    <0>, "!10",
+			    <0>, "!16",
+			    <0>, "=21",
+			    <0>, "=22";
+		nohdmi0 =   <0>, "-1-3-8";
+		nohdmi1 =   <0>, "-2-4-10";
+		nohdmi =    <0>, "-1-2-3-4-8-10";
+	};
+};

@@ -1,0 +1,57 @@
+/*
+ * vc4-fkms-v3d-overlay.dts
+ */
+
+/dts-v1/;
+/plugin/;
+
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target-path = "/reserved-memory/linux,cma";
+		frag0: __overlay__ {
+			/*
+			 * The default size when using this overlay is 256 MB
+			 * and should be kept as is for backwards
+			 * compatibility.
+			 */
+			size = <0x10000000>;
+		};
+	};
+
+	fragment@1 {
+		target-path = "/soc/fb";
+		__overlay__  {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target-path = "/soc/firmwarekms@7e600000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/v3dbus/v3d@7ec04000";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+
+	fragment@4 {
+		target-path = "/gpu";
+		__overlay__  {
+			status = "okay";
+		};
+	};
+	fragment@5 {
+		target-path = "/chosen";
+		__overlay__  {
+			bootargs = "clk_ignore_unused";
+		};
+	};
+};

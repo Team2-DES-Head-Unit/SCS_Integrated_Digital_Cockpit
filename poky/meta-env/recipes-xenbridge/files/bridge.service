@@ -1,0 +1,14 @@
+[Unit]
+Description=Persistent NAT bridge and iptables setup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/autobridgeassign.sh
+Restart=on-failure
+RestartSec=3
+StartLimitIntervalSec=0
+
+[Install]
+WantedBy=multi-user.target

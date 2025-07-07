@@ -1,0 +1,3 @@
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", TAG+="systemd", ENV{SYSTEMD_WANTS}="scrcpy@%k.service"
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", TAG+="systemd", ENV{SYSTEMD_WANTS}="scrcpy@%k.service"
+SUBSYSTEM=="usb", ATTR{idVendor}=="2a70", MODE="0666", TAG+="systemd", ENV{SYSTEMD_WANTS}="scrcpy@%k.service"

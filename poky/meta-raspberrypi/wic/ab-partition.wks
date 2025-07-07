@@ -1,0 +1,5 @@
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --align 4
+part /rootfsA --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsA --align 4
+part /rootfsB --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootfsB --align 4
+bootloader --ptable msdos
+
