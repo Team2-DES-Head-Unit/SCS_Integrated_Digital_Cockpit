@@ -1,0 +1,4 @@
+/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/edit_cache.dir
+/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/rebuild_cache.dir
+/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/HeadUnit.dir
+/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/HeadUnit_autogen.dir

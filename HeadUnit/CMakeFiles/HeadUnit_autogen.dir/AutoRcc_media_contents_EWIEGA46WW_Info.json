@@ -1,0 +1,33 @@
+{
+	"BUILD_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/HeadUnit_autogen",
+	"CMAKE_BINARY_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit",
+	"CMAKE_SOURCE_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit",
+	"INCLUDE_DIR" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/HeadUnit_autogen/include",
+	"INPUTS" : 
+	[
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Thumbnail/Pomeranian_Grooming_Teddy_bear_style.png",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Thumbnail/World_premiere-The_all_new_Tayron.png",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Thumbnail/Once_upon_a_time_there_was_one_cutest_kitten.png",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/AlainaCastillo-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/Maneskin-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/WaveToEarth-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/Hanumankind-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/AimeeCarty-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/SOLOMON-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/JVKE-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/DAY6-cover.jpeg",
+		"/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/Cover/BrenJoy-cover.jpeg"
+	],
+	"LOCK_FILE" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/HeadUnit_autogen.dir/AutoRcc_media_contents_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "media_contents" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_media_contents.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/qt5/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/CMakeFiles/HeadUnit_autogen.dir/AutoRcc_media_contents_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/llj/SCS_Integrated_Digital_Cockpit/HeadUnit/media_contents.qrc",
+	"VERBOSITY" : 0
+}
