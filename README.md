@@ -8,7 +8,7 @@ This project focuses on developing an integrated digital cockpit system based on
 
 ## **Overview**
 
-[_talkv_wxUWTSja2o_ov7sr1G0Ysbrc6PVkcjEJ1_talkv_high.mp4](files/_talkv_wxUWTSja2o_ov7sr1G0Ysbrc6PVkcjEJ1_talkv_high.mp4)
+[Demo.mp4](files/_talkv_wxUWTSja2o_ov7sr1G0Ysbrc6PVkcjEJ1_talkv_high.mp4)
 
 The Xen hypervisor is an open-source, type-1 hypervisor that enables multiple independent operating systems(domains) to run concurrently on a single hardware system. This architecture allows each domain to be strictly isolated, significantly improving both safety and security.
 
@@ -59,33 +59,25 @@ To run Xen properly, both Dom0 and DomU kernels must be configured with Xen-comp
 
 #### Dom0 Kernel Configuration
 Dom0 must support Xen backend drivers and hypervisor communication features. Make sure the following kernel options are enabled:
-
+```bash
 - CONFIG_XEN_DOM0
 - CONFIG_XEN
-
 - CONFIG_BRIDGE
 - CONFIG_PHY_BROADCOM
-
 - CONFIG_XEN_BLKDEV_BACKEND
-
 - CONFIG_XEN_GNTDEV
-
 - CONFIG_XEN_DEV_EVTCHN
-
+```
 #### DomU Kernel Configuration
 DomU images require frontend drivers and PVH support:
-
+```bash
 - CONFIG_XEN
 - CONFIG_XEN_NETDEV_FRONTEND
-
 - CONFIG_XEN_BLKDEV_FRONTEND
-
 - CONFIG_HVC_XEN
-
 - CONFIG_PARAVIRT
-
 - CONFIG_XEN_PVH 
-
+```
 ### Creating a DomU (Guest) Domain
 To launch a DomU domain, create a configuration file like the following:
 
