@@ -1,80 +1,176 @@
-# SEA:ME Project - Integrated Digital Cockpit
+# Hypervisor - SCS:Integrated Digital Cockpit
 
-- [SEA:ME Project - Integrated Digital Cockpit](#-seame-project---integrated-digital-cockpit)
-  - [Introduction](#introduction)
-  - [Background Information](#background-information)
-  - [Project Goals and Objectives](#project-goals-and-objectives)
-  - [System Architecture](#system-architecture)
-  - [Project Timeline](#project-timeline)
-  - [Submission](#submission)
-  - [References](#references)
+## **Introduction**
 
-## Introduction
+This project focuses on developing an integrated digital cockpit system based on the Xen hypervisor. By leveraging virtualization, the system consolidates multiple automotive functions—such as Instrument cluster, Head unit—onto a single hardware platform. The use of a hypervisor ensures robust isolation, security, and resource efficiency, aiming to enhance both the user experience and system reliability in next-generation vehicles. [Here is the detailed explanation of this project](https://github.com/SEA-ME/SCS_Integrated_Digital_Cockpit)
 
-![Demo GIF](./files/demo.gif)
-Recent vehicles are making efforts to adopt Zonal Architecture rather than the conventional ECU placement that focused on functionalities. In this context, secure isolation between different system domains is essential for a single controller to meet diverse safety requirements of multiple systems. To achieve this, there have been continuous efforts to introduce hypervisor—commonly used in servers—into vehicles, aiming to accomplish safe data transfer between different domains while minimizing performance degradation.
-This project aims to integrate the Cluster, Head Unit Qt application and the PDC-System into a Mixed Criticality System (MCS). Both systems, developed in the previous projects, will be separated into different domains on a single RPi using a hypervisor, and will exchange data through inter-domain communication.
-</br>
+---
 
+## **Overview**
 
-## Background Information
+[_talkv_wxUWTSja2o_ov7sr1G0Ysbrc6PVkcjEJ1_talkv_high.mp4](files/_talkv_wxUWTSja2o_ov7sr1G0Ysbrc6PVkcjEJ1_talkv_high.mp4)
 
-The [meta-virtualization](https://layers.openembedded.org/layerindex/branch/master/layer/meta-virtualization/) layer provided by the Yocto project supplies virtualization technologies such as Xen, KVM, Libvirt, and others, along with the necessary packages for building virtualized systems. Participants can implement a basic virtualization platform using several recipes from the meta-virtualization layer, and port the systems implemented in the previous projects to MCS.
-</br>
+The Xen hypervisor is an open-source, type-1 hypervisor that enables multiple independent operating systems(domains) to run concurrently on a single hardware system. This architecture allows each domain to be strictly isolated, significantly improving both safety and security.
 
+![hypervisor_system_architecture.png](files/hypervisor_system_architecture.png)
 
-## Project Goals and Objectives
+Key features of Hypervisor-Based Architecture
 
-The goals and objectives of the project are as follows:
+- Domain Isolation: Safety-critical and non-safety functions are logically separated, ensuring that faults in one domain do not affect others
+- Resource Efficiency: Hardware resources are dynamically allocated and managed for maximum system efficiency
 
-1. Execute the Cluster, Head Unit application and the PDC-System in separate Linux virtual domains using a hypervisor.
-2. Transfer ultrasonic sensor data and control results to the Cluster application using an inter-domain communication protocol.
-3. Optimize the system to minimize the overhead and performance degradation caused by hardware virtualization.
-</br>
+---
 
+## Project Description
 
-## System Architecture
+### XEN Project
+- **Type-1 Hypervisor**: Runs directly on the hardware (bare metal), not on top of an operating system.
+- **Dom0**: The first domain (privileged), responsible for managing hardware and creating other guest domains.
+- **DomU**: Unprivileged guest domains running user operating systems.
+- **Virtualization Types**: Supports Paravirtualization (PV), Hardware-assisted Virtualization (HVM), and PVH (hybrid).
 
-The architecture below is an example of a virtualized system architecture that uses the Xen hypervisor. It has three domains: Dom 0, a privileged domain that manages hardware resources and controls virtual machines with the help of Xen, and two Dom U, unprivileged guest virtual machines isolated from Dom 0. In this example architecture, Dom 0 runs the PDC-System and collects data from sensors. Data and control results are transferred to the Cluster and Head Unit applications running on Dom U via an inter-domain communication such as Xen vchan or VsomeIp. The Cluster and Head Unit applications are launched using the VNC plugin provided by Qt, and Dom 0 displays applications on the monitor.
-
-This architecture is provided as an example scenario, and participants are free to configure the system as they see fit.
-
-![Example System Architecture](https://github.com/user-attachments/assets/e4c2e6f8-6e42-421b-924b-f8b5852ed007)
-</br>
+### Detailed about the Project
+- **Dom0**: Controls the PiRacer hardware and accesses the physical display via VNC.
+- **DomU1 (HU)**: Runs the **Head Unit** Qt application.
+- **DomU2 (IC)**: Runs the **Instrument Cluster** Qt application.
 
 
-## Project Timeline
+### Enabling Xen Hypervisor on Yocto
 
- The following is a sample project timeline:
- 
- 1. Week 1: Study virtualization and analyze the technical requirements of the project.
- 2. Week 2: Build a basic Linux image that runs on a hypervisor, rather than on the hardware itself and configure the system environment settings.
- 3. Week 3: Integrate your Cluster application into the MCS and run the application using various Qt plugins (vnc, linuxfb, etc.).
- 4. Week 4: Integrate your Head Unit into the another guest domain and segregate the PDC from the Head Unit to Dom 0.
- 5. Week 5: Implement an inter-domain communication between Cluster and PDC-System, and output sensor data and control results to the cluster.
- 6. Week 6-7: Analyze and optimize system performance from various perspectives, including responsiveness, stability, and safety.
- 7. Week 8: Final preparation and submission. Participants should use this time to finalize their project reports, document their code, and prepare their submissions. The final project submissions are due at the end of week 12.
-</br>
+To enable **Xen** in your Yocto-based image, follow these steps:
+
+### 1. Add `meta-virtualization` Layer
+
+Ensure you have the `meta-virtualization` layer in your Yocto workspace. Add it to your `bblayers.conf`:
+
+```bash
+BBLAYERS += "/path/to/meta-virtualization"
+```
+### 2. Enable Xen in local.conf
+Append Xen-related features to your distro:
+
+```bash
+DISTRO_FEATURES:append = " virtualization xen"
+```
+`Note: Tigervnc cannot be used with Wayland, as it is based on X11.`
+
+### Configuring Dom0 and DomU for Xen
+To run Xen properly, both Dom0 and DomU kernels must be configured with Xen-compatible options.
+
+#### Dom0 Kernel Configuration
+Dom0 must support Xen backend drivers and hypervisor communication features. Make sure the following kernel options are enabled:
+
+- CONFIG_XEN_DOM0
+- CONFIG_XEN
+
+- CONFIG_BRIDGE
+- CONFIG_PHY_BROADCOM
+
+- CONFIG_XEN_BLKDEV_BACKEND
+
+- CONFIG_XEN_GNTDEV
+
+- CONFIG_XEN_DEV_EVTCHN
+
+#### DomU Kernel Configuration
+DomU images require frontend drivers and PVH support:
+
+- CONFIG_XEN
+- CONFIG_XEN_NETDEV_FRONTEND
+
+- CONFIG_XEN_BLKDEV_FRONTEND
+
+- CONFIG_HVC_XEN
+
+- CONFIG_PARAVIRT
+
+- CONFIG_XEN_PVH 
+
+### Creating a DomU (Guest) Domain
+To launch a DomU domain, create a configuration file like the following:
+
+Belowed code is `domic.cfg` 
+```bash
+kernel = "/home/root/IcImage"
+cmdline = "console=hvc0 earlyprintk=xen sync_console root=/dev/xvda"
+memory = "512"
+name = "ic"
+vcpus = 1
+serial = "pty"
+disk = [ 'file:/home/root/IC.ext3,xvda,w' ]
+vif = [ 'mac=00:11:22:66:88:33,bridge=natbr0' ]
+```
+Replace IcImage with your custom kernel image and IC.ext3 with your root filesystem.
+
+Then launch the domain from Dom0 using:
+
+```bash
+xl create -c ic.cfg
+```
+Make sure both the kernel image and the root filesystem (ext3) exist on the Dom0 filesystem before running this command.
 
 
-## Submission
+---
 
-Upon completion of the project, participants should submit a GitHub repository that includes the following components:
+### VNC
 
-1. **Software Code**: Participants should provide the source code for their systems, including the system configurations and applications. The code should be well-documented, with clear explanations of the overall system architecture concept.
-2. **Performance Results**: Participants should provide a comparison of the overall performance measurement results with the previous system. This may include screenshots or videos in action, as well as metrics and statistics that measure the performance.
-3. **Project Report**: Participants should provide a project report that describes their experience with the project, including any challenges faced and how they were overcome. The report should also include a discussion of the system architecture and techniques used, as well as the results and conclusions of the project.
+---
 
-By providing these components, the participants will demonstrate their understanding of the concepts and techniques involved in the project, and will provide evidence of their ability to implement a virtualization system. The GitHub repository will serve as a portfolio of the participants' work, and will provide a record of their achievements and contributions to the field of embedded systems.
-</br>
+### Vchan Communication
 
+Vchan is a communication mechanism in Xen environments that enables high speed, low latency inter-domain communication. It’s built on shared memory and event channels, using grant tables to securely grant memory access between domains.
 
-## References
+**Why we using vchan?**
 
-* Yocto Project. (2021). Yocto Project. https://www.yoctoproject.org/
-* Qt Project. (2021). Qt Project. https://www.qt.io/
-* Raspberry Pi Foundation. (2021). Raspberry Pi. [https://www.raspberrypi.org/](https://www.raspberrypi.org/)
-* CAN specification documents: These documents provide detailed information on the CAN (Controller Area Network) protocol and its implementation.
-* VsomIp/Autosar documents: These documents provide information on the Inter-Process Communication (IPC) frameworks VsomIp and Autosar and their implementation in the automotive industry.
-* meta-virtualization: This layer provides support for virtualization. [meta-virtualization](https://layers.openembedded.org/layerindex/branch/master/layer/meta-virtualization/)
-</br>
+It is lightweight, no extra daemons or protocols are needed and it’s fully integrated into the Xen ecosystem. Based on these advantages, we chose vchan as an alternative to conventional communication protocols like CAN and VSOME/IP.
+
+**vchan communication structure**
+
+- Grant table: allow a domain to securely share memory pages with another domain by storing access permissions.
+- Event channel: provides interrupt-based signal for real-time responsiveness during data transmission.
+- Xenstore: manages communication channel setup and shared memory information between domains.
+
+---
+
+## Tech Stack
+
+---
+
+## Contributors
+
+<center>
+<table align="center">
+<tr>
+<td align="center">
+<a href="https://github.com/iznue">
+<img src="https://github.com/iznue.png" width="150px;" alt="Eunji Lee"/>
+<br />
+<sub><b>Eunji Lee</b></sub>
+</a>
+<br />
+<a href="https://github.com/iznue"><img src="https://img.shields.io/badge/GitHub-iznue-blue?logo=github" alt="GitHub Badge" /></a>
+<br />
+</td>
+<td align="center">
+<a href="https://github.com/programerKim">
+<img src="https://github.com/programerKim.png" width="150px;" alt="Sunwung Kim"/>
+<br />
+<sub><b>Seungjoo Kim</b></sub>
+</a>
+<br />
+<a href="https://github.com/programerKim"><img src="https://img.shields.io/badge/GitHub-programerKim-blue?logo=github" alt="GitHub Badge" /></a>
+<br />
+</td>
+<td align="center">
+<a href="https://github.com/mechsoon">
+<img src="https://github.com/mechsoon.png" width="150px;" alt="Jisoo Kim"/>
+<br />
+<sub><b>Soonwoong Kim</b></sub>
+</a>
+<br />
+<a href="https://github.com/mechsoon"><img src="https://img.shields.io/badge/GitHub-mechsoon-blue?logo=github" alt="GitHub Badge" /></a>
+<br />
+</td>
+</tr>
+</table>
+</center>
